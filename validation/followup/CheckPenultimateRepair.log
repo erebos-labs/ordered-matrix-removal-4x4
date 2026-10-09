@@ -1,0 +1,32 @@
+def OrderedMatrixRemoval4.Host.PenultimateRepair.repairedMatrix : (h : Nat) → BinaryMatrix (Host.size h) :=
+fun h r c => if repairCell h r c = true then false else Host.matrix h r c
+def OrderedMatrixRemoval4.Host.PenultimateRepair.repairCell : (h : Nat) →
+  Fin (Host.size h) → Fin (Host.size h) → Bool :=
+fun h r c =>
+  match Host.labelAt false h r, Host.labelAt true h c with
+  | Host.Position.dummy clone, Host.Position.variable depth false node clone_1 => decide (depth = h - 1)
+  | x, x_1 => false
+def OrderedMatrixRemoval4.Host.PenultimateRepair.rows : Fin 4 → Fin (Host.size 4) :=
+fun i =>
+  match ↑i with
+  | 0 => ⟨800, rows._proof_1⟩
+  | 1 => ⟨802, rows._proof_2⟩
+  | 2 => ⟨804, rows._proof_3⟩
+  | x => ⟨912, rows._proof_4⟩
+def OrderedMatrixRemoval4.Host.PenultimateRepair.cols : Fin 4 → Fin (Host.size 4) :=
+fun i =>
+  match ↑i with
+  | 0 => ⟨836, cols._proof_1⟩
+  | 1 => ⟨864, cols._proof_2⟩
+  | 2 => ⟨868, cols._proof_3⟩
+  | x => ⟨880, cols._proof_4⟩
+'OrderedMatrixRemoval4.Host.PenultimateRepair.size_four' does not depend on any axioms
+'OrderedMatrixRemoval4.Host.PenultimateRepair.rows_labelAt' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.PenultimateRepair.cols_labelAt' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.PenultimateRepair.rows_increasing' does not depend on any axioms
+'OrderedMatrixRemoval4.Host.PenultimateRepair.cols_increasing' does not depend on any axioms
+'OrderedMatrixRemoval4.Host.PenultimateRepair.selected_repair_cells' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.PenultimateRepair.original_bottom_row' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.PenultimateRepair.selected_matches' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.PenultimateRepair.orderedCopy_depth4' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.PenultimateRepair.not_hFree_depth4' depends on axioms: [propext, Quot.sound]

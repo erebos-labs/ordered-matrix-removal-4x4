@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-09",
+  "review_type": "Separate AI-assisted audits; public summary, not the full private reports",
+  "ordinary": {
+    "verdict": "PASS",
+    "report_proof_sha256": "c7ac840e24e9feb664884fa117caf574c7715b8f9bddf4c02ced8b4a3663856e",
+    "scope": "All-depth argument and independent finite reconstruction; no fresh Lean build"
+  },
+  "counterexample": {
+    "verdict": "PASS",
+    "source_sha256": "ee5fed2f1212e22efc3036805c4ad0288f81f6cc84535d7ae6f7ef7b431de0ee",
+    "scope": "Fresh 37-module build, actual physical semantics, fixed-depth literal kernel proof and 256 edits",
+    "packaging_finding": "Original packet omitted FILE_MANIFEST.json and SHA256SUMS; corrected in this integrated payload"
+  },
+  "all_depth_formal": {
+    "verdict": "PASS",
+    "report_sha256": "ef6853462183a130831a1a27ef51068cd86d526ae03a537d925113b5973534a3",
+    "scope": "Fresh 38-module rebuild, quantified semantics, full source and axiom checks, nonvacuity, complete import-environment empty-kernel replay",
+    "foundational_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "fresh_replay_modules": [
+      "TerminalAnchorCount",
+      "ExpectedStatement"
+    ],
+    "external_sources_freshly_elaborated": false
+  },
+  "source_origins": {
+    "ExpectedStatement.lean": "060ba66319ff761b33dcba243100240acac3f5e2b6f2171f246d26a5b057f4b3",
+    "AxiomClosure.lean": "7ca23c55540fe6712f543af7baa2f5d5f6c0d334d9b91b9ffffbe5ba36c1c2cc",
+    "Nonvacuity.lean": "4b46c6646fd93ec2d324698cf2a89202f7c4e2fd34a699b56f670f87bfd873f5"
+  },
+  "integration_adjustments": "Package-qualified imports and documentation/output paths only; final hashes and fresh integrated results recorded separately",
+  "limits": "Same official Lean kernel, no compiler bootstrap, no independent kernel implementation or human referee endorsement; no priority conclusion"
+}

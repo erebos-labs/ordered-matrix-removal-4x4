@@ -1,11 +1,32 @@
 # Attribution and contribution boundary
 
-The explicit H4 candidate and its two-anchor host appear in ProveIt at commit `bfbfe915186310fdf745a7a089e7dd88eeb773b1`, in [the generalization and research discussion](https://github.com/VladimirReshetnikov/ProveIt/blob/bfbfe915186310fdf745a7a089e7dd88eeb773b1/Combinatorics/OrderedMatrices/Research/ordered-matrix-removal/sections/generalization_and_research.tex).
+The original notice is preserved verbatim in `provenance/V1_NOTICE.md`;
+`provenance/PROVEIT_NOTICE.txt` and `provenance/FROZEN_NOTICE.md` are unchanged.
+All original license texts and third-party notices remain applicable.
 
-[OpenAI/math, pinned at fd4aeeb](https://github.com/openai/math/tree/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/preprints/Polynomial-removal-fails-for-ordered-binary-matrices-September-25-2026), supplies the signed-tree construction, role vectors, threshold entries, six-mode order, and protected-selection arbitrary-edit distance method. The order ending in minus parity zero then minus parity one is inherited. ProveIt's specific inherited-material notice is retained unchanged as `provenance/PROVEIT_NOTICE.txt`.
+[OpenAI/math](https://github.com/openai/math/tree/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/preprints/Polynomial-removal-fails-for-ordered-binary-matrices-September-25-2026)
+supplies the signed-tree construction, role vectors, thresholds, mode order
+and protected-selection arbitrary-edit lower-bound method.
+[ProveIt](https://github.com/VladimirReshetnikov/ProveIt/tree/bfbfe915186310fdf745a7a089e7dd88eeb773b1/Combinatorics/OrderedMatrices/Research/ordered-matrix-removal)
+supplies the explicit H4 candidate, its two-anchor host and smaller-anchor
+obstacle; its 5×5 construction already has exact m² repair distance.
+[v1.0.0](https://github.com/erebos-labs/ordered-matrix-removal-4x4/tree/45248e57ab1c2197419981bba04e1cde050494ca)
+supplies the original all-copy localization and unrestricted physical
+lower-bound formalization. These contributions are not claimed as new here.
 
-The contribution is proving all-copy sparse-zero localization and the unpinned-family analysis for that existing candidate, together with its Lean formalization. The deterministic modular-shift selection family is the formal implementation of the inherited distance method. The candidate, construction, mode order and distance strategy are not claimed as new inventions. The frozen formalization's code-origin statement says all new project modules were written locally and no upstream Lean source expressions were transplanted; its notice is preserved unchanged as `provenance/FROZEN_NOTICE.md`. Mathematical attribution remains necessary for an accurate contribution statement.
+The added work is the terminal-anchor repair, its all-depth freeness and
+exact-distance proof, and the depth-four counterexample to the full
+penultimate-negative-column repair, with Lean formalization and reproducible
+checks. The three added proof modules were written locally and use imported
+baseline APIs. The count proof applies the inherited lower bound after
+establishing freeness. Original project proof modules were not edited.
 
-The ordinary proof, checkers and formalization were prepared with ChatGPT/Codex assistance at the publisher's direction. Two separate AI-assisted adversarial mathematical reviews supported the ordinary proof. A further independent AI-assisted audit rebuilt the frozen Lean project and checked theorem meaning, dependency provenance and trust graph. This is not a human referee process, endorsement by the cited projects, or proof of global priority. The verified publisher and maintainer is Erebos Labs (@erebos-labs). No personal identity or human referee authorship is asserted.
+Prepared with ChatGPT/Codex assistance at the publisher's direction. Separate
+AI-assisted reviews checked the ordinary proof and earlier counterexample.
+No human peer review, upstream endorsement, worldwide priority, unique repair
+or minimum pattern size is claimed. This is a local follow-up candidate for
+Erebos Labs (@erebos-labs), not an executed publication action.
 
-This release changes only explanatory packaging and optional reproduction/helper paths. All 36 project proof modules, both frozen Lean checkers, the frozen bounded rebuild helper and configuration files are unchanged, with origin hashes in `proof-source-manifest.json`. The source archive and full original audit snapshot are preserved privately without edits. The publisher's new material is licensed under Apache 2.0 as stated in the root `LICENSE`; existing third-party terms remain applicable. See `LICENSE_STATUS.md` for scope.
+The existing root Apache-2.0 LICENSE applies to publisher material as stated
+in LICENSE_STATUS.md. Third-party text and dependency terms remain unchanged.
+No dependency checkout, toolchain or private source snapshot is distributed.

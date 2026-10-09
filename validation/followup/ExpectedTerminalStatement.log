@@ -1,0 +1,9 @@
+'IndependentAudit.explicit_expected_statement' depends on axioms: [propext, Classical.choice, Quot.sound]
+'IndependentAudit.actual_minimum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'IndependentAudit.normalized_actual_minimum' depends on axioms: [propext, Classical.choice, Quot.sound]
+OrderedMatrixRemoval4.Host.TerminalAnchorRepair.exact_minimum (h : ℕ) (hh : 1 ≤ h) :
+  HFree H4 (TerminalAnchorRepair.matrix h) ∧
+    editCount h (TerminalAnchorRepair.matrix h) = (2 ^ h) ^ 2 ∧
+      ∀ (B : BinaryMatrix (size h)), HFree H4 B → (2 ^ h) ^ 2 ≤ editCount h B
+IndependentAudit.actual_minimum (h : ℕ) (hh : 1 ≤ h) : Removal.repairCount (matrix h) = (2 ^ h) ^ 2
+IndependentAudit.normalized_actual_minimum (h : ℕ) (hh : 1 ≤ h) : Removal.distance (matrix h) = 1 / (14 * ↑h + 2) ^ 2

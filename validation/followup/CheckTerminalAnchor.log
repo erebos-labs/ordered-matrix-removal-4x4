@@ -1,0 +1,22 @@
+def OrderedMatrixRemoval4.Host.TerminalAnchorRepair.TerminalColumn : Nat → Position → Prop :=
+fun h x =>
+  match x with
+  | Position.anchor l k g clone => l = h ∧ (k = 4 ∨ k = 5) ∧ g = 0
+  | x => False
+def OrderedMatrixRemoval4.Host.TerminalAnchorRepair.matrix : (h : Nat) → BinaryMatrix (size h) :=
+fun h r c => if TerminalColumn h (labelAt true h c) ∧ Nonanchor (labelAt false h r) then false else Host.matrix h r c
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.third_row_nonanchor_of_anchor_agreement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.no_new_copy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.original_first_column_terminal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.free' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.changed_iff_tags' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.edit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.exact_minimum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

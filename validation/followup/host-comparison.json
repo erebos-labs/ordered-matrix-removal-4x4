@@ -1,0 +1,28 @@
+{
+  "coverage": "finite h=1,2 only",
+  "results": [
+    {
+      "check": "h1_expanded_matrix_bytes",
+      "n": 32,
+      "cells": 1024,
+      "sha256": "8c8fe323c9f152dc6095cbe6ea127441e06ecf09b2d23aa006bce64d3fb75ba8",
+      "passed": true
+    },
+    {
+      "check": "h2_expanded_matrix",
+      "n": 120,
+      "cells": 14400,
+      "passed": true
+    },
+    {
+      "check": "h2_r_tags_order_and_clones",
+      "positions": 120,
+      "passed": true
+    },
+    {
+      "check": "h2_c_tags_order_and_clones",
+      "positions": 120,
+      "passed": true
+    }
+  ]
+}

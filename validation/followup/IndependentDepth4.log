@@ -1,0 +1,33 @@
+def OrderedMatrixRemoval4.H4 : BinaryMatrix 4 :=
+fun r c =>
+  match ↑r, ↑c with
+  | 0, 1 => true
+  | 0, 2 => true
+  | 1, 0 => true
+  | 1, 3 => true
+  | 2, 0 => true
+  | 2, 2 => true
+  | 3, 1 => true
+  | 3, 2 => true
+  | 3, 3 => true
+  | x, x_1 => false
+def OrderedMatrixRemoval4.Increasing : {k n : Nat} → (Fin k → Fin n) → Prop :=
+fun {k n} f => ∀ (i j : Fin k), ↑i < ↑j → ↑(f i) < ↑(f j)
+def OrderedMatrixRemoval4.Matches : {k n : Nat} →
+  BinaryMatrix k → BinaryMatrix n → (Fin k → Fin n) → (Fin k → Fin n) → Prop :=
+fun {k n} H A rows cols => ∀ (r c : Fin k), A (rows r) (cols c) = H r c
+def OrderedMatrixRemoval4.OrderedCopy : {k n : Nat} →
+  BinaryMatrix k → BinaryMatrix n → (Fin k → Fin n) → (Fin k → Fin n) → Prop :=
+fun {k n} H A rows cols => Increasing rows ∧ Increasing cols ∧ Matches H A rows cols
+def OrderedMatrixRemoval4.HFree : {k n : Nat} → BinaryMatrix k → BinaryMatrix n → Prop :=
+fun {k n} H A => ∀ (rows cols : Fin k → Fin n), ¬OrderedCopy H A rows cols
+def OrderedMatrixRemoval4.Host.matrix : (h : Nat) → BinaryMatrix (size h) :=
+fun h r c => entry h (labelAt false h r) (labelAt true h c)
+theorem OrderedMatrixRemoval4.Host.PenultimateRepair.orderedCopy_depth4 : OrderedCopy H4 (repairedMatrix 4) rows cols :=
+⟨rows_increasing, ⟨cols_increasing, selected_matches⟩⟩
+theorem OrderedMatrixRemoval4.Host.PenultimateRepair.not_hFree_depth4 : ¬HFree H4 (repairedMatrix 4) :=
+fun hf => hf rows cols orderedCopy_depth4
+'IndependentDepth4.support_exact' depends on axioms: [propext, Quot.sound]
+'IndependentDepth4.edits_exact' depends on axioms: [propext, Quot.sound]
+'IndependentDepth4.independent_copy' depends on axioms: [propext, Quot.sound]
+'IndependentDepth4.independent_not_free' depends on axioms: [propext, Quot.sound]

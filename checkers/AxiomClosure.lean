@@ -1,0 +1,25 @@
+import OrderedMatrixRemoval4.TerminalAnchorCount
+import OrderedMatrixRemoval4.Removal
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.TerminalColumn
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.matrix
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.anchor_agreement
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.outside_agreement
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.terminal_nonanchor_zero
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.third_row_nonanchor_of_anchor_agreement
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.no_new_copy
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.original_first_column_terminal
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.free
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.changed_iff_tags
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.anchor_clone_bound
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.cell_tag_members
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.cell
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.cell_labels
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.candidates
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.candidates_length
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.edits_subset
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.edit_count
+#print axioms OrderedMatrixRemoval4.Host.TerminalAnchorRepair.exact_minimum
+#print axioms OrderedMatrixRemoval4.Host.all_copy_localization
+#print axioms OrderedMatrixRemoval4.Host.arbitrary_edit_distance
+#print axioms OrderedMatrixRemoval4.Removal.repair_attained
+#print axioms OrderedMatrixRemoval4.Removal.repair_minimal

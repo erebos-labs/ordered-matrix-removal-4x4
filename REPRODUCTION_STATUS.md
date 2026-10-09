@@ -1,11 +1,36 @@
-# Release packaging checks and limits
+# Follow-up verification scope
 
-The independent Lean audit successfully rebuilt the original frozen reproduction route with a fresh official compiler, all 36 project modules and quantified statements. The mathematical proof files in this release are byte-identical to that audited source. No proof file was changed for this packaging task, and no new formal validity claim is inferred from a file hash alone.
+The separate ordinary-proof audit accepted the all-depth terminal-anchor
+argument, inherited theorem meaning and physical edit count. Its independently
+written finite checker was rerun before integration. The separate depth-four
+counterexample audit accepted actual host semantics, full-class support,
+literal kernel-reduced copy and all 256 edits. The independent all-depth formal audit separately passed a fresh build of
+all 38 submitted project modules, ordinary replay of all modules and empty
+kernel replay of the new optimum theorem and independent semantic checker
+including their full import environments. Its checker proves actual attained
+minimum and normalized distance explicitly. These reviews were AI-assisted.
 
-The release's optional host helper was changed only to accept explicit CLI paths and to use bundled relative defaults. The comparison algorithm was retained. It ran successfully after copying the package to a new directory with spaces and invoking it from an unrelated working directory. Its depth-one and depth-two matrix/axis outputs matched the initial run. The unchanged independent audit host checker also ran successfully from that relocated package, comparing 139,328 cells and counting 128 depth-one copies. The release-integrity verifier passed from the relocated package.
+Integrated checks and final source hashes are recorded in
+`PACKAGING_VALIDATION.json` and `validation/followup/`. A full project source
+rebuild is required after integration; original quantified statements, both
+new theorem checkers, an independent literal counterexample check, physical
+fixture comparisons, finite scans and new-module kernel replay are included
+in the wrapper. Final readiness is described by the validation receipt, not
+inferred from a hash or an earlier scratch build.
 
-The new slim dependency restorer was exercised from the relocated package using the exact frozen dependency inputs. It matched the official tested compiler archive digest, all 9,291 mathlib source hashes and all eight pinned dependency trees. The complete slim reproduction wrapper then succeeded from that directory with spaces, starting from an unrelated working directory. It used the independently audited official cache archives, re-elaborated all 36 frozen project modules and the quantified statement checker, and printed only the three stated foundational axioms. Fresh depth-one and depth-two host exports matched the fixtures; the unchanged independent statement checker was also re-elaborated. The Python and shell helper syntax checks passed.
+The tested execution platform is macOS arm64. Compiler/standard-library,
+mathlib and dependency caches, OS and hardware remain trusted. The pinned
+dependency sources are hash-verified, but dependency source proofs and compiler
+bootstrap are not rebuilt. The official kernel replay uses the same Lean
+kernel. No claim of another-platform testing or human referee review is made.
 
-The dependency downloader's fresh-network branch was not exercised in this packaging run; exact source restoration used the already checked frozen inputs. The independent audit separately verified fresh official compiler/cache downloads. No cross-platform reproduction claim is made. `PACKAGING_VALIDATION.json` records this scope and hashes of the retained execution logs.
+The original audit summaries/logs and paper are historical baseline material;
+their statements about exact distance or then-absent certification refer to
+v1.0.0. New finite computations certify only their reported depths. The new
+terminal repair's unbounded claim is the ordinary proof and quantified Lean
+theorem; the failed-repair copy theorem is restricted to depth four.
 
-Dependencies, source archives, compiler binaries and downloaded caches generated during reproduction remain local development artifacts and must not be added to the public release archive. The shipped archive contains the pinned proof source, licenses/notices, source hash records, mathematical paper, checkers and bounded audit evidence, with no compiled project proofs or dependency cache. `FILE_MANIFEST.json` and `SHA256SUMS` enumerate the final payload and its integrity scope.
+Source/cache/toolchain downloads, fresh-network restoration and independent
+formal review are reported separately in the receipt. A local successful
+integration build cannot be described as that separate independent review.
+No Git push, tag, release or external post is authorized or performed here.

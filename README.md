@@ -1,6 +1,8 @@
-# A four by four obstruction to polynomial ordered binary matrix removal
+# Ordered binary matrix removal: exact host repair distance
 
-This release contains a Lean proof that the ordered binary pattern
+This local follow-up candidate extends [v1.0.0](https://github.com/erebos-labs/ordered-matrix-removal-4x4/tree/45248e57ab1c2197419981bba04e1cde050494ca)
+with an explicit optimal repair for its host and a counterexample to an earlier
+repair. The pattern is
 
 ```text
 0110
@@ -9,50 +11,79 @@ This release contains a Lean proof that the ordered binary pattern
 0111
 ```
 
-has no polynomial ordered removal bound. Every copy uses independently increasing row and column embeddings and matches all sixteen bits, including zeros. Distance is the actual minimum fraction of entries that must be changed to make a binary matrix free of this pattern, with changes allowed anywhere and in either direction.
+Copies use independently strictly increasing row and column embeddings and
+match all sixteen bits. Edits may occur anywhere in either direction.
+For every h≥1, m=2^h and n=(14h+2)m, the terminal-anchor repair is H4-free
+and changes exactly m² physical cells. The inherited unrestricted lower bound
+therefore attains equality: the minimum edit distance of this host is m²
+(normalized distance 1/(14h+2)²). The formal theorem supplies an attaining
+matrix and a lower bound for every free alternative.
 
-The theorem says that no positive real constants c and C guarantee at least c times epsilon to the power C times n to the power eight copies in every matrix epsilon-far from being pattern-free. The stronger result also supplies arbitrarily small positive epsilon and arbitrarily large orders beyond any prescribed epsilon-dependent size threshold. See `THEOREM.md` for the exact statement and theorem names.
+Zeroing dummy rows against the entire negative-column class at depth h−1
+is a different repair. A newly created copy proves that repair fails at h=4.
+The formal counterexample does not assert failure at every depth.
 
-All 36 project Lean modules are byte-identical to the frozen source accepted by the independent Lean audit on 9 October 2026. The audit rebuilt the project with official Lean 4.34.1 and checked its fully quantified meaning, unrestricted edit distance and ordinary copy count. The final foundational dependencies are exactly `propext`, `Classical.choice` and `Quot.sound`. It found no proof holes, added axioms, unsafe dependencies or missing declarations. This is formal verification under the disclosed Lean trust base, not independent compiler bootstrapping, a complete mathlib source rebuild or human referee endorsement. See `audit/README.md` and `PROVENANCE.md`.
+- [Exact statements and theorem names](THEOREM.md)
+- [Complete ordinary optimal-repair proof](paper/terminal-anchor-proof.md)
+- [Depth-four counterexample](paper/penultimate-repair-counterexample.md)
+- Lean entry point: `import OrderedMatrixRemoval4.Repairs`
+- [Verification scope](REPRODUCTION_STATUS.md), [provenance](PROVENANCE.md), and [prior work](PRIOR_WORK.md)
 
-Building on OpenAI's signed-tree construction and the exact four by four candidate proposed in ProveIt, we prove that this pattern has no polynomial ordered binary removal bound by establishing sparse-zero localization for every ordered copy, including unpinned embeddings, and formalize the obstruction in Lean. The candidate, construction, protected-selection distance method and mode order are inherited. Two focused prior-work challenges found no equivalent proof in the sources they checked as of 9 October 2026. This supports an attributed contribution statement, not a claim of worldwide first discovery or minimum pattern size.
+The original 36 proof modules, original umbrella and frozen statement checkers
+remain byte-identical to v1.0.0. The original no-polynomial-removal theorem
+is retained. `paper/report.tex` and `paper/report.pdf` are unchanged historical
+baseline material; their statements about certification or absence of an
+exact upper bound predate this follow-up. The new proof is the Markdown
+companion, not a relabeling of that historical paper.
 
 ## Reproduction
 
-Python 3.12 or later, git and an independently verified official Lean 4.34.1 toolchain are required for full restoration and reproduction. No compiler, dependency checkout, Git history, precompiled project proof or dependency cache is bundled. Sources are restored at exact recorded pins, and the mathlib source archive and recorded source trees are checked before cache use. The audit tested macOS arm64. Other platforms have not been independently tested for this package.
+Requirements: Python 3.12+, git, and a verified official Lean 4.34.1 toolchain.
+Dependency pins, source hashes and compiler information are in
+`DEPENDENCIES.json`; mathlib is pinned to
+`d13f23b723b8a846827a245b89c10fc7d3f11612`. Set `LEAN4_BIN` to the official
+toolchain bin directory. The optional `LEAN4_ARCHIVE` checks the recorded
+macOS-arm64 archive digest; another platform needs its own official digest.
 
-After cloning or extracting the release, run these quick checks from the package root, or use absolute script paths from any working directory:
+Quick integrity and finite checks, from the package root:
 
 ```sh
 python3 checkers/verify_release.py
+mkdir -p evidence
 python3 checkers/check_host.py
-python3 audit/checkers/compare_hosts.py
+python3 checkers/check_penultimate_repair.py
+python3 checkers/check_terminal_anchor.py
 ```
 
-The two host helpers compare bundled Lean exports with independently constructed or research-fixture matrices. They are bounded implementation checks, not substitutes for the all-depth proofs. Both have been run from a relocated package. The first helper also accepts explicit `--exports`, `--fixtures` and `--output` paths.
-
-For the full proof rebuild, set `LEAN4_BIN` to the absolute bin directory of a verified official Lean 4.34.1 distribution. On the tested macOS arm64 platform, optionally set `LEAN4_ARCHIVE` to its original tar.zst archive to check the digest recorded in `DEPENDENCIES.json`. Then run:
+Full pinned restoration, source rebuild, statement checks and kernel replay:
 
 ```sh
-sh checkers/reproduce.sh
+sh checkers/reproduce_followup.sh --download
 ```
 
-This command downloads the exact pinned mathlib source and eight transitive repositories when absent, restores needed artifacts from mathlib's official hash-keyed cache, and re-elaborates all 36 project modules sequentially with `-j2`. The unchanged quantified statement checker runs afterward; logs go to the newly generated `evidence` directory. The packaging wrapper and dependency restoration were adapted for this slim release; the original frozen reproduction route was independently tested by the auditor. The release validation receipt states which release checks were executed locally.
+This restores exact dependency sources and uses official mathlib cache objects.
+With dependencies/cache already present, omit `--download` for an offline run.
+Every project module is re-elaborated from source, sequentially with two Lean
+threads. The new modules and independent quantified/literal checkers are replayed
+with official `leanchecker`. The independent semantic checker proves the
+release-defined attained minimum and normalized distance explicitly. Outputs go
+to local `evidence/` and `.lake/`, which are excluded from the payload manifest.
+Kernel replay uses the same Lean kernel and imported dependencies; it is not
+an independent compiler implementation or a full mathlib source rebuild.
 
-To check freshly generated host exports after a successful rebuild:
+The finite scanner checks all compressed column quadruples through depth four
+and a literal physical depth-one expansion, with positive/negative and random
+controls. These are bounded consistency checks; they do not replace the
+all-depth proof or prove compression optimal for unrestricted repairs.
 
-```sh
-"$LEAN4_BIN/lake" env lean -j2 checkers/ExportHost.lean
-python3 checkers/check_host.py --exports evidence --fixtures fixtures/research --output evidence/host-comparison.json
-"$LEAN4_BIN/lake" env lean -j2 audit/checkers/IndependentStatements.lean
-```
+## License and attribution
 
-The official tested compiler archive is [Lean 4.34.1 macOS arm64](https://github.com/leanprover/lean4/releases/tag/v4.34.1), SHA-256 `65f22a4f047738ec742667b3247e836a86ebf06eabc12655c3dee00637e37866`. Its reported commit is `5045d0056413266e57c625dcd7c365b10e377c52`. Mathlib is pinned to `d13f23b723b8a846827a245b89c10fc7d3f11612`; its archive SHA-256 is `a8c019444a1edd6091d8416e492e218a311db340dafbea96c61c6dc358c28f05`. Platform-specific compiler digests differ; do not apply the macOS archive digest to another platform.
-
-The included `paper/report.pdf` and `paper/report.tex` are the unchanged ordinary mathematical report. They predate the completed formalization, so their then-current statements about absent Lean certification are superseded by this package's formalization and audit status. Their exact-copy formula is reviewed by the ordinary audits but is not part of the Lean-certified claims listed here. Historical script paths in that paper refer to its original research archive; use this README for the release package's reproduction commands. `mathematical-checks/audit_checker.py` is the separately written ordinary-audit checker. Run it from the package root after creating an `evidence` directory; its depth-six run is finite evidence and takes substantially longer than the quick host comparisons.
-
-## License and credits
-
-Published and maintained by [Erebos Labs (@erebos-labs)](https://github.com/erebos-labs). The proof, manuscript, checkers and reviews were prepared with ChatGPT/Codex assistance at the publisher's direction. The supporting audits were AI-assisted; no human referee endorsement is claimed.
-
-The new material in this release is licensed under Apache 2.0; see `LICENSE` and `LICENSE_STATUS.md`. Existing third-party texts retain their original terms. `NOTICE.md` credits OpenAI/math and ProveIt and explains the contribution boundary. This release does not claim a new candidate or construction, worldwide priority, or minimum pattern size.
+The candidate preserves Apache 2.0 and all inherited notices and dependency
+licenses. See [NOTICE.md](NOTICE.md) and [LICENSE_STATUS.md](LICENSE_STATUS.md).
+The host, pattern, mode order and lower-bound strategy are inherited from
+OpenAI/math, ProveIt and v1.0.0. The additional result concerns the specified
+4×4 host. The prior 5×5 construction already has an m²-distance equality
+theorem. No worldwide-first, repair-uniqueness or pattern-minimality claim is
+made. Work and supporting independent audits were AI-assisted; no human
+referee endorsement is claimed. This is a local candidate, with no release,
+tag, repository push or external post performed.

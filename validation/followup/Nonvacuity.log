@@ -1,0 +1,3 @@
+'IndependentAudit.original_not_free' depends on axioms: [propext, Classical.choice, Quot.sound]
+'IndependentAudit.domain_nonempty' does not depend on any axioms
+'IndependentAudit.all_depth_axes_nonempty' depends on axioms: [propext, Quot.sound]

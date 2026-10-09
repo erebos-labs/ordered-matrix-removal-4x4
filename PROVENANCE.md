@@ -1,13 +1,52 @@
-# Frozen source and review provenance
+# Follow-up source provenance
 
-The frozen Lean source archive accepted by the independent audit is `h4-lean-certified-20261009.tar.gz`, SHA-256 `601e7705e3acfca6b002f05e7e5f10820487ac0a09aa1e709ccc2ff7b89963a1`. Its original source-manifest digest is `517dcb47b027c9e45f698d84415c6e5059b72b06e17cae8a16ac6dc2de9be83a`. The release contains byte-identical project proof files and frozen statement/export checkers, with explicit member-to-file mappings and hashes in `proof-source-manifest.json`.
+Baseline: v1.0.0 commit `45248e57ab1c2197419981bba04e1cde050494ca`, extracted
+from its verified clean Git checkout. Original proof files and frozen checkers
+are byte-identical; `proof-source-manifest.json` remains the original record.
+Historical baseline provenance and packaging status are preserved under
+`provenance/V1_*`. The original paper and audit artifacts retain their own
+scope; their exact-count claims are not relabeled Lean-certified.
 
-The ordinary mathematical research archive has SHA-256 `ee3a93ad97f1d7a182a5dd4bce5111ea85828ff8f2a8c490ced8403f835a76a8`; its report.tex has SHA-256 `c1acaf9709bb1741a56ccdeb0e6576e77a67ca95084645f8786ba1d0bf816e51`. Its report.pdf has SHA-256 `8089419374350e1853685f32ae7288b2679154c9cab46e319ad7f126bb7bf0ab`. The included paper files are unchanged. They are historical ordinary proof material; their additional exact-count assertions are not relabeled as Lean-certified.
+Added optimal-repair sources originate in a separate frozen scratch proof.
+The source hashes before integration were:
 
-The independent Lean audit report dated 9 October 2026 has SHA-256 `083dd136e6032f9d7ee9b1686b5bbc218711d6614b166d0d9efef8a141b7a7db`. Its exact original snapshot is retained privately because it contains development locations. `audit/README.md` is a newly written public summary, not an edited replacement claiming to be that original snapshot. The independent statement checker, host comparison checker, exports, trust summary and graph are retained unchanged and separately hashed in `audit/ARTIFACT_MANIFEST.json`.
+- TerminalAnchorRepair.lean: `d6fff01dec518aa5d5a685ddb8256168122c909b4732406ddc8e87cd6cf256ef`
+- TerminalAnchorCount.lean: `e2b8029982c22ca641befcf90ac9f51fef580e4c0bb3f54e95a605930e526f79`
 
-The first ordinary-audit checker was written before the supplied archive was accessible and imports none of its programs. Its original standard-library code and finite results are retained unchanged under `mathematical-checks`. Those computations cover explicitly finite depths, independently of the all-depth Lean theorem. The ordinary reviewers and the Lean auditor were AI-assisted; no human referee certification is implied.
+Integration changes only the repair-module documentation comment and the
+count-module import path to the package-qualified name. Candidate hashes are
+in `FILE_MANIFEST.json`; they are distinct from those frozen scratch hashes.
+The ordinary proof review accepted the argument independently (reviewed
+proof SHA-256 `c7ac840e24e9feb664884fa117caf574c7715b8f9bddf4c02ced8b4a3663856e`).
+The public companion proof removes private execution/status material and
+updates the already-completed formalization wording; its mathematical
+argument is retained. `check_terminal_anchor.py` is the separately written
+reviewer's scanner with only output-path/usage adjustments.
 
-Packaging changes consist of new public explanatory documents, slim dependency restoration, a release-integrity verifier, and CLI/relative-file handling for the optional frozen `check_host.py`. Its comparison algorithm is retained. The release does not include private absolute paths, Library identifiers, conversation identifiers, raw development logs, dependency checkouts, Git metadata, precompiled proof files or a giant dependency cache. No Lean proof file was edited for portability.
+PenultimateRepair.lean is unchanged from the separately audited counterexample
+source, SHA-256 `ee5fed2f1212e22efc3036805c4ad0288f81f6cc84535d7ae6f7ef7b431de0ee`.
+The separate literal Lean checker and physical audit helper are included.
+That review found a missing-metadata packaging defect, corrected here by
+including the final payload manifest and checksums. It found no mathematical
+or build defect. Its generic support lemmas do not extend the fixed-depth
+non-freeness theorem to every depth.
 
-The prior-work attribution is substantive: the candidate, host, threshold roles, mode order and distance method are inherited. Two focused prior-work reviews, including a second challenge using symmetry-related patterns and alternate terminology, found no equivalent proof in their checked sources as of 9 October 2026. This packaging task did not duplicate those searches. No claim of worldwide first discovery or minimum pattern size is made by this release. Formal checking certifies the stated theorem under its trust base, not its priority or authorship.
+All review claims are reported with their scopes in REPRODUCTION_STATUS.md.
+Public summaries omit private paths, conversation identifiers and raw
+transcripts; they do not claim to be the original full review snapshots.
+The independent formal audit also passed: all 38 submitted modules were
+freshly rebuilt, all were replayed, and the complete imported environments
+of the optimum theorem and independent semantic checker were replayed into
+an empty kernel environment. Its report SHA-256 is
+`ef6853462183a130831a1a27ef51068cd86d526ae03a537d925113b5973534a3`.
+The reviewer semantic, nonvacuity and axiom-closure Lean checkers are included
+with only the package-qualified import adjustment. Their source origins and
+review summary are recorded in validation/followup/INDEPENDENT_REVIEWS.json.
+The normalized minimum identity is formally proved by the semantic checker,
+not added to or attributed to the original two submitted modules.
+
+Dependencies and compiler pins remain unchanged. Official Lean 4.34.1 commit
+`5045d0056413266e57c625dcd7c365b10e377c52` and pinned mathlib source hashes
+are checked before integration rebuild; imported mathlib/cache artifacts are
+trusted. The compiler is not bootstrapped and mathlib is not rebuilt from
+source. The original release and frozen research inputs remain immutable.

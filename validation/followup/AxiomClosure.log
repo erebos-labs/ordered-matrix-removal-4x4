@@ -1,0 +1,37 @@
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.TerminalColumn' depends on axioms: [propext]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.matrix' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.anchor_agreement' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.outside_agreement' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.terminal_nonanchor_zero' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.third_row_nonanchor_of_anchor_agreement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.no_new_copy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.original_first_column_terminal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.free' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.changed_iff_tags' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.anchor_clone_bound' depends on axioms: [propext, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.cell_tag_members' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.cell_labels' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.candidates' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.candidates_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.edits_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.edit_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.TerminalAnchorRepair.exact_minimum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'OrderedMatrixRemoval4.Host.all_copy_localization' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Host.arbitrary_edit_distance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Removal.repair_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'OrderedMatrixRemoval4.Removal.repair_minimal' depends on axioms: [propext, Classical.choice, Quot.sound]
