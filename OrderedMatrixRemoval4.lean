@@ -1,0 +1,124 @@
+import OrderedMatrixRemoval4.Semantics
+import OrderedMatrixRemoval4.Arithmetic
+import OrderedMatrixRemoval4.Host
+import OrderedMatrixRemoval4.Structure
+import OrderedMatrixRemoval4.Order
+import OrderedMatrixRemoval4.Traversal
+import OrderedMatrixRemoval4.ParentOrder
+import OrderedMatrixRemoval4.Correspondence
+import OrderedMatrixRemoval4.Incidence
+import OrderedMatrixRemoval4.Embedding
+import OrderedMatrixRemoval4.Frame
+import OrderedMatrixRemoval4.Crown
+import OrderedMatrixRemoval4.Classes
+import OrderedMatrixRemoval4.Shape
+import OrderedMatrixRemoval4.GeneralOrder
+import OrderedMatrixRemoval4.Leaf
+import OrderedMatrixRemoval4.Modes
+import OrderedMatrixRemoval4.CanonicalBody
+import OrderedMatrixRemoval4.UnpinnedCases
+import OrderedMatrixRemoval4.UnpinnedBody
+import OrderedMatrixRemoval4.Localization
+
+import OrderedMatrixRemoval4.Bounds
+import OrderedMatrixRemoval4.Sparse
+import OrderedMatrixRemoval4.FiniteCounting
+import OrderedMatrixRemoval4.CopyCount
+
+import OrderedMatrixRemoval4.PathOrder
+import OrderedMatrixRemoval4.HostGuard
+import OrderedMatrixRemoval4.PathFrames
+import OrderedMatrixRemoval4.IntactPath
+
+import OrderedMatrixRemoval4.Sampling
+import OrderedMatrixRemoval4.ShiftSampling
+
+import OrderedMatrixRemoval4.SelectionFamily
+import OrderedMatrixRemoval4.GenericCount
+import OrderedMatrixRemoval4.Blowup
+import OrderedMatrixRemoval4.Removal
+
+#print axioms OrderedMatrixRemoval4.pattern_rows_distinct
+#print axioms OrderedMatrixRemoval4.pattern_columns_distinct
+#print axioms OrderedMatrixRemoval4.nonterminal_siblings
+#print axioms OrderedMatrixRemoval4.equal_parity_parent_order
+#print axioms OrderedMatrixRemoval4.terminal_parent_equal
+#print axioms OrderedMatrixRemoval4.minus_one_cannot_precede_minus_zero
+#print axioms OrderedMatrixRemoval4.next_level_anchor_cannot_precede
+#print axioms OrderedMatrixRemoval4.Host.axis_length
+#print axioms OrderedMatrixRemoval4.Host.leaf_sign_identification
+#print axioms OrderedMatrixRemoval4.Host.variable_row_nested
+#print axioms OrderedMatrixRemoval4.Host.variable_column_nested
+#print axioms OrderedMatrixRemoval4.Host.equal_parity_row_anchor_signature
+#print axioms OrderedMatrixRemoval4.Host.equal_parity_column_anchor_signature
+#print axioms OrderedMatrixRemoval4.Host.axis_nodup
+#print axioms OrderedMatrixRemoval4.Host.labelAt_injective
+#print axioms OrderedMatrixRemoval4.Host.labelAt_surjective
+#print axioms OrderedMatrixRemoval4.Host.tagCopy_iff_exists_copy
+#print axioms OrderedMatrixRemoval4.Host.column_minus_child_parent
+#print axioms OrderedMatrixRemoval4.Host.minus_nonterminal_incidence_iff
+#print axioms OrderedMatrixRemoval4.Host.nonterminal_sibling_exception_impossible
+#print axioms OrderedMatrixRemoval4.Host.first_two_anchor_order_strict
+#print axioms OrderedMatrixRemoval4.Host.no_nonterminal_unpinned_minus_shape
+#print axioms OrderedMatrixRemoval4.frame_extension
+#print axioms OrderedMatrixRemoval4.guarded_path_contradiction
+
+#print axioms OrderedMatrixRemoval4.Host.nonanchor_crown_exclusion
+#print axioms OrderedMatrixRemoval4.Host.column_role_same_class
+#print axioms OrderedMatrixRemoval4.Host.row_role_same_class
+#print axioms OrderedMatrixRemoval4.Host.same_class_three_row_signatures
+#print axioms OrderedMatrixRemoval4.Host.same_class_three_column_signatures
+#print axioms OrderedMatrixRemoval4.Host.second_row_anchor
+#print axioms OrderedMatrixRemoval4.Host.first_column_anchor
+#print axioms OrderedMatrixRemoval4.Host.copy_anchor_shape
+#print axioms OrderedMatrixRemoval4.Host.second_row_first_column_groups
+
+#print axioms OrderedMatrixRemoval4.Host.earlier_minus_role_even
+#print axioms OrderedMatrixRemoval4.Host.axis_traversal_ordered
+#print axioms OrderedMatrixRemoval4.Host.same_class_node_order
+#print axioms OrderedMatrixRemoval4.Host.child_before_parent_bound
+#print axioms OrderedMatrixRemoval4.Host.parent_before_child_bound
+#print axioms OrderedMatrixRemoval4.Host.same_level_phase_order
+#print axioms OrderedMatrixRemoval4.Host.leaf_tag_clone_zero
+#print axioms OrderedMatrixRemoval4.Host.canonical_frame_of_copy
+#print axioms OrderedMatrixRemoval4.Host.canonical_body_localizes
+#print axioms OrderedMatrixRemoval4.Host.canonical_copy_localization
+#print axioms OrderedMatrixRemoval4.Host.unpinned_vertical_body_localizes
+#print axioms OrderedMatrixRemoval4.Host.unpinned_positive_body_localizes
+
+#print axioms OrderedMatrixRemoval4.Host.unpinned_body_localizes
+#print axioms OrderedMatrixRemoval4.Host.unpinned_copy_localization
+#print axioms OrderedMatrixRemoval4.Host.all_copy_localization
+
+#print axioms OrderedMatrixRemoval4.Host.variable_axis_mem_iff
+#print axioms OrderedMatrixRemoval4.Host.sparseCells_length
+#print axioms OrderedMatrixRemoval4.Host.sparseCells_nodup
+#print axioms OrderedMatrixRemoval4.Host.mem_sparseCells_iff
+#print axioms OrderedMatrixRemoval4.Host.copy_count_bound
+
+#print axioms OrderedMatrixRemoval4.Host.path_vertical_plus_guard
+#print axioms OrderedMatrixRemoval4.Host.path_vertical_minus_guard
+#print axioms OrderedMatrixRemoval4.Host.path_horizontal_plus_guard
+#print axioms OrderedMatrixRemoval4.Host.path_horizontal_minus_guard
+#print axioms OrderedMatrixRemoval4.Host.intact_mode_guard
+#print axioms OrderedMatrixRemoval4.Host.path_shared_leaf
+#print axioms OrderedMatrixRemoval4.Host.intact_path_contains_copy
+
+#print axioms OrderedMatrixRemoval4.Host.mem_edits
+#print axioms OrderedMatrixRemoval4.Host.edits_nodup
+#print axioms OrderedMatrixRemoval4.Host.edit_count_of_separating_paths
+#print axioms OrderedMatrixRemoval4.Host.shift_class_injective
+
+#print axioms OrderedMatrixRemoval4.Host.shiftPath
+#print axioms OrderedMatrixRemoval4.Host.shiftPath_separates
+#print axioms OrderedMatrixRemoval4.Host.arbitrary_edit_distance
+
+#print axioms OrderedMatrixRemoval4.Blowup.project_copy
+#print axioms OrderedMatrixRemoval4.Blowup.arbitrary_edit_distance
+#print axioms OrderedMatrixRemoval4.Blowup.copy_count_bound
+#print axioms OrderedMatrixRemoval4.Removal.repair_attained
+#print axioms OrderedMatrixRemoval4.Removal.repair_minimal
+#print axioms OrderedMatrixRemoval4.Removal.blowup_distance
+#print axioms OrderedMatrixRemoval4.Removal.exponential_choice
+#print axioms OrderedMatrixRemoval4.Removal.counterexample
+#print axioms OrderedMatrixRemoval4.Removal.no_polynomial_removal

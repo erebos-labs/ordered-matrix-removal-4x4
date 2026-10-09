@@ -1,0 +1,31 @@
+{
+  "method": "independent rational interval order and literal report entry/role tables",
+  "coverage": "finite h=1,2,3; not an all-depth proof",
+  "results": [
+    {
+      "h": 1,
+      "n": 32,
+      "cells": 1024,
+      "axes": 64,
+      "matrix_sha256": "8c8fe323c9f152dc6095cbe6ea127441e06ecf09b2d23aa006bce64d3fb75ba8",
+      "passed": true
+    },
+    {
+      "h": 2,
+      "n": 120,
+      "cells": 14400,
+      "axes": 240,
+      "matrix_sha256": "1a6f7dd14f514294f67df2188b1f0878eb454f5bc7d2376ae5baade48626375f",
+      "passed": true
+    },
+    {
+      "h": 3,
+      "n": 352,
+      "cells": 123904,
+      "axes": 704,
+      "matrix_sha256": "f55fa507ee7f59c02b079f70971a18ecbdee8a45b9472ff584a4ffbe6d506317",
+      "passed": true
+    }
+  ],
+  "h1_exhaustive_ordinary_copy_count": 128
+}

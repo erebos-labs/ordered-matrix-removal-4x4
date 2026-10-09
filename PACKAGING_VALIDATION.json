@@ -1,0 +1,64 @@
+{
+  "proof_file_changes": 0,
+  "frozen_files_verified": 42,
+  "project_modules_unchanged": 36,
+  "all_project_and_frozen_checker_lean_sources_unchanged": true,
+  "original_frozen_archive_sha256": "601e7705e3acfca6b002f05e7e5f10820487ac0a09aa1e709ccc2ff7b89963a1",
+  "original_full_audit_report_sha256": "083dd136e6032f9d7ee9b1686b5bbc218711d6614b166d0d9efef8a141b7a7db",
+  "relocation_tests": [
+    {
+      "script": "checkers/check_host.py",
+      "exit_code": 0,
+      "cwd": "unrelated temporary directory",
+      "package_directory_contains_spaces": true,
+      "stdout_sha256": "f8b6acbb64130017ee4af52c8294a8be50bbb219998dc009e7b4150d76b97ccf"
+    },
+    {
+      "script": "audit/checkers/compare_hosts.py",
+      "exit_code": 0,
+      "cwd": "unrelated temporary directory",
+      "package_directory_contains_spaces": true,
+      "stdout_sha256": "f9c9abb91cceb463313e095b82557d733fd5494a0e288674b12081d4ad38455e"
+    },
+    {
+      "script": "checkers/verify_release.py",
+      "exit_code": 0,
+      "cwd": "unrelated temporary directory",
+      "package_directory_contains_spaces": true,
+      "stdout_sha256": "e2eb2181cb612db2458d51f56f73672ef75d381c1ecc6279bae3ee94859c6021"
+    }
+  ],
+  "host_helper_results_equal": true,
+  "offline_pinned_dependency_restoration": {
+    "exit_code": 0,
+    "compiler_archive_digest_verified": true,
+    "mathlib_source_hashes_matched": 9291,
+    "pinned_dependency_trees_matched": 8,
+    "fresh_network_download_branch_executed": false
+  },
+  "full_candidate_rebuild_executed_here": true,
+  "full_frozen_rebuild_by_independent_auditor": "PASS",
+  "tested_platform": "macOS arm64",
+  "public_candidate_contains_dependency_cache": false,
+  "license_for_new_material": "Apache-2.0; third-party terms retained",
+  "priority_wording": "Two scope-limited checks found no equivalent proof; no global-first or minimality claim",
+  "full_release_rebuild_executed_here": true,
+  "rebuild_method": "Relocated directory with spaces; official audited dependency cache; 36 frozen project modules and unchanged quantified checker re-elaborated sequentially with -j2",
+  "fresh_host_export_and_comparison": "PASS",
+  "publisher": {
+    "login": "erebos-labs",
+    "name": "Erebos Labs",
+    "github_account_id": 291301897
+  },
+  "execution_log_hashes": {
+    "rebuild-proofs.log": "4aa3049af0810cb8135a4524b2799095412187bab3732609c96724746acd03b0",
+    "reproduction-driver.log": "827f899bf6a16444720d9f6e4d475f030a912c64a18529aeb8d37f363866337d"
+  },
+  "independent_statement_checker_reelaborated": "PASS",
+  "included_execution_evidence": [
+    "validation/rebuild-proofs.log",
+    "validation/independent-statements-recheck.log",
+    "validation/reproduction-driver.log",
+    "validation/fresh-host-comparison.json"
+  ]
+}

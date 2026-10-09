@@ -1,0 +1,5 @@
+Matched 42 unchanged frozen proof/configuration/checker files.
+Hashes establish integrity; theorem correctness relies on the reported Lean checks.
+Official tested macOS-arm64 compiler archive digest matched.
+Matched 9291 mathlib source hashes and all eight pinned dependency trees.
+All 36 frozen project modules and quantified statements rebuilt; inspect evidence/rebuild-proofs.log for axioms.

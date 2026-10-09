@@ -1,0 +1,1273 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{microtype,xcolor,enumitem,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={A 4 by 4 Obstruction to Polynomial Ordered Binary Matrix Removal},pdfauthor={Research investigation, 9 October 2026},pdfsubject={Complete mathematical proof, prior-work audit, and reproducible exact certificates}}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Ordered binary matrix removal}
+\fancyhead[R]{\small Research record, 9 October 2026}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Rrole}{\mathsf R}
+\newcommand{\Crole}{\mathsf C}
+\newcommand{\ancR}{\widehat R}
+\newcommand{\ancC}{\widehat C}
+\newcommand{\crown}{\mathcal C}
+\newcommand{\Hfour}{H_4}
+\title{\textbf{A \(4\times4\) Obstruction to Polynomial\\Ordered Binary Matrix Removal}\\[6pt]
+\large Sparse zero localization despite unpinned anchors}
+\author{Research record prepared in this investigation}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The strongest prior result located in this investigation is an October 7
+ProveIt research manuscript giving a \(5\times5\) obstruction, improving
+OpenAI's \(66\times66\) construction. That manuscript also displays a
+\(4\times4\) candidate and an unpinned copy that survives its proposed
+repair. We prove that this previously displayed candidate does fail
+polynomial ordered binary matrix removal in the original two-group host.
+The new structural fact is that every copy, including every unpinned
+copy, maps its prescribed zero at coordinate \((3,4)\) to a leaf row and
+its parent-minus column block. The order of the two minus-parity modes
+excludes the only possible nonterminal exception.
+
+For \(h\ge1\), put \(m=2^h\), \(d_h=14h+2\), and \(n_h=d_hm\).
+The explicit hosts have normalized edit distance at least \(d_h^{-2}\)
+from \(\Hfour\)-freeness under arbitrary binary changes. Every copy
+meets a fixed \(2m\)-cell set at a specified pattern coordinate, so
+\(N_{\Hfour}(A_h)\le2mn_h^6\). A complete three-family classification
+further gives \(N_{\Hfour}(A_h)=(41m^6-74m^5)/4\) for \(h\ge2\),
+and \(N_{\Hfour}(A_1)=128\).
+
+All proofs are included. Two separately implemented exhaustive programs
+agree on the complete weighted copy sets through depth five. Their
+finite checks support the implementations; they do not replace the
+all-depth proof. The new theorem has not been kernel-checked in Lean.
+No minimality or exhaustive publication-priority claim is made.
+\end{abstract}
+\newpage
+{\small\tableofcontents}
+\newpage
+
+\section{Strongest baseline, contribution, and precise statement}
+
+\subsection{Dated prior-work finding}
+As checked on 9 October 2026, current \texttt{openai/math} main is
+\path{fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb}, the snapshot supplied
+for this investigation. Its family-190 manuscript and Lean catalogue
+still specify a \(66\times66\) counterexample~\cite{oai,oaiLean}.
+The public main history has three commits and one merged pull request.
+The family-190 paths have not changed since the initial public commit.
+
+A stronger external result was found through GitHub code search:
+\emph{A \(5\times5\) Obstruction to Polynomial Ordered Matrix Removal},
+a ProveIt research draft dated 7 October 2026~\cite{proveit}.
+The first returned path-history commit is
+\texttt{bfbfe915186310fdf745a7a089e7dd88eeb773b1},
+dated 7 October at 21:24:26 UTC. It supplies ordinary proofs for
+\[
+H_5=
+\begin{pmatrix}
+0&1&1&1&0\\
+1&0&1&0&1\\
+1&1&0&0&0\\
+1&0&0&1&0\\
+0&1&0&1&1
+\end{pmatrix},
+\qquad n=(20h+2)2^h,
+\]
+with exactly \(2(2^h)^8\) copies and minimum repair size \(4^h\).
+Its main structural tool is full-pattern pinning with the crown
+\(J_3-I_3\). We reconstructed its principal pinning, counting, and
+arbitrary-edit proofs and found no gap in those statements. Its code was
+also rerun successfully; that rerun is distinguished from our independent
+implementations. The prior result is not Lean-formalized.
+
+The same prior manuscript already displays the matrix \(\Hfour\) below,
+and gives an unpinned copy surviving a dummy-row-by-leaf-column repair.
+It leaves the possibility of a different counting argument open.
+\textbf{The candidate matrix itself is prior work. The contribution here
+is proving that this candidate works, by classifying and controlling its
+unpinned copies.}
+
+The first concrete dense-anchor reduction considered was a six-position
+dense prefix with 32 binary-word rows, giving a \(38\times38\) anchor.
+That reduction is valid, as detailed in Appendix~\ref{app:38}, but is
+superseded by the located \(5\times5\) theorem. The precise stronger size
+target therefore became \(4\times4\).
+
+\subsection{Definitions and every quantifier}
+Write \([n]=\{1,\ldots,n\}\). For a binary \(k\times k\) matrix \(H\)
+and a binary \(n\times n\) matrix \(A\), an ordered copy is a pair of
+strictly increasing maps \(r,c:[k]\to[n]\) satisfying
+\[
+A(r(i),c(j))=H(i,j)\quad\text{for every }i,j\in[k].
+\]
+The maps are chosen independently. Every zero and every one must match.
+Rows and columns need not be consecutive. There is no quotient by
+permutations or other symmetries. Let \(N_H(A)\) count these pairs.
+The matrix \(A\) is \(H\)-free exactly when \(N_H(A)=0\).
+
+For \(n\ge1\), define
+\[
+\dist_H(A)=\frac1{n^2}
+ \min_{\substack{B\in\{0,1\}^{[n]\times[n]}\\N_H(B)=0}}
+ \bigl|\{(x,y)\in[n]^2:A(x,y)\ne B(x,y)\}\bigr|.
+\]
+For our patterns the minimum is nonempty because the all-zero matrix is
+free. Edits can be anywhere and can change bits in either direction.
+The normalization of copy counts is \(n^{2k}\); using
+\(\binom nk^2\) instead only changes fixed-pattern constants in the
+relevant range.
+
+A fixed \(H\) has polynomial ordered removal if
+\[
+\begin{split}
+\exists c_H,C_H>0\ \forall n\in\mathbb N_{\ge1}\
+\forall\eps\in(0,1)\
+\forall A\in\{0,1\}^{[n]\times[n]}:\qquad\\
+\dist_H(A)\ge\eps\ \Longrightarrow\
+N_H(A)\ge c_H\eps^{C_H}n^{2k}.
+\end{split}
+\]
+Failure for the explicit \(\Hfour\) means
+\[
+\begin{split}
+\forall c,C\in\mathbb R_{>0}\ \exists n\in\mathbb N_{\ge1}\
+\exists\eps\in(0,1)\ \exists A\in\{0,1\}^{[n]\times[n]}:\qquad\\
+\dist_{\Hfour}(A)\ge\eps
+\quad\text{and}\quad N_{\Hfour}(A)<c\eps^C n^8.
+\end{split}
+\]
+The constructed sequence in fact supplies such witnesses with arbitrarily
+large \(n\) and arbitrarily small positive \(\eps\).
+
+\begin{theorem}[Four-by-four obstruction]\label{thm:main}
+Let
+\[
+\boxed{\Hfour=
+\begin{pmatrix}
+0&1&1&0\\
+1&0&0&1\\
+1&0&1&0\\
+0&1&1&1
+\end{pmatrix}.}
+\]
+For every integer \(h\ge1\), set
+\[
+m=2^h,\qquad d_h=14h+2,\qquad n_h=d_hm,\qquad \eps_h=d_h^{-2}.
+\]
+The deterministic host \(A_h\) in Section~\ref{sec:host} satisfies
+\[
+\dist_{\Hfour}(A_h)\ge\eps_h,\qquad
+N_{\Hfour}(A_h)\le 2m n_h^6.
+\]
+More precisely,
+\[
+N_{\Hfour}(A_h)=
+\begin{cases}
+128,&h=1,\\[2pt]
+\dfrac{41m^6-74m^5}{4},&h\ge2.
+\end{cases}
+\]
+Consequently
+\[
+\frac{N_{\Hfour}(A_h)}{n_h^8}
+\le \frac{41}{4}\eps_h^4\,4^{-h},
+\]
+and polynomial ordered binary matrix removal fails for \(\Hfour\).
+\end{theorem}
+
+\section{Reconstruction of the published baseline}
+\label{sec:baseline}
+
+\subsection{The 64-by-64 anchor and 2-by-2 body}
+For zero-based row and column indices \(u,v\in\{0,\ldots,63\}\), the
+published anchor is \(J_{64}-I_{64}\), except that rows \(32,\ldots,63\)
+and columns \(59,\ldots,63\) are replaced by all five-bit words:
+\[
+S_{64}(u,59+j)=
+ \left\lfloor\frac{u-32}{2^{4-j}}\right\rfloor\bmod2
+\quad(32\le u<64,\ 0\le j<5).
+\]
+With \(e_1,e_2\) the first two coordinate vectors, the pattern is
+\[
+H_{66}=
+\begin{pmatrix}
+S_{64}&e_1&e_2\\
+e_1^{\mathsf T}&1&0\\
+e_2^{\mathsf T}&1&1
+\end{pmatrix},\qquad
+P=\begin{pmatrix}1&0\\1&1\end{pmatrix}.
+\]
+Rows and columns of \(S_{64}\) are distinct. Each row has at least
+58 ones, each column at least 48. The first 32 positions on either
+axis give a dense core: any row or column has at most one zero there.
+The 32 word rows shatter the final five columns.
+
+\subsection{Host, distance, and count are separate ingredients}
+The host uses the signed binary-tree positions and six modes per level
+given explicitly below. For a general anchor order \(s\), there are
+\(6hs\) anchor groups, \(2h+1\) variable classes, and one dummy class
+per axis, each of size \(m=2^h\). Thus
+\[
+n=(6hs+2h+2)m.
+\]
+For \(s=64\), this is \((386h+2)m\).
+
+The published distance proof selects a common random path and independent
+anchor, dummy, and within-block representatives. Every protected changed
+cell is encountered with probability \(m^{-2}\). Fewer than \(m^2\)
+edits therefore leave one protected selection intact. Avoiding its four
+types of \(P\)-body would propagate opposite root values to the same
+leaf cell, a contradiction. This proof applies to the edited matrix
+itself, including copies that edits create.
+
+The published counting proof is different. A nonanchor variable position
+has at most four incidences with selected distinct anchor groups.
+Nonanchor rows do not shatter five nonanchor columns. The dense core and
+word block therefore pin every leading \(S_{64}\)-copy to one complete
+mode anchor. Its body then has the designated roles. Three mode types
+are impossible; the fourth forces a common diagonal leaf cell.
+There are \(m\) such cells, and hence
+\[
+N_{H_{66}}(A_h)\le mn^{130},\qquad
+\frac{N_{H_{66}}(A_h)}{n^{132}}
+\le (386h+2)^{-2}2^{-h}.
+\]
+Changing the original leaf-diagonal ones to zeros hits all original
+copies but creates plus-mode copies. A transversal is not a repair.
+
+This distinction is consistent with Alon--Ben-Eliezer's Theorem 1.2,
+which concerns entry-disjoint existing copies, whereas their Problem 1.4
+asks about genuine edit distance~\cite{ab}. Qualitative ordered removal
+is established in~\cite{abf}. The singleton polynomial question is
+Conjecture 4.5 in the first version of~\cite{gs}. The ordered-graph
+classification in~\cite{gt} concerns one common vertex order, a different
+model from independent row and column selections.
+
+\subsection{What the actual Lean implementation proves}
+The solution module
+\path{OAI.Combinatorics.MatrixRemoval.Main} proves
+\path{OAI.Problem348.counterexample_sequence} and
+\path{OAI.Problem348.no_polynomial_removal_bound}.
+The underlying definitions use two strictly increasing maps and Boolean
+equality at every cell. Hamming distance counts all differing cells.
+The minimum ranges over all binary matrices, assigning nonfree matrices
+the sentinel \(n^2+1\); the all-zero free matrix makes this equivalent
+to the stated minimum when \(n\ge1\).
+
+The sequence theorem is unconditional for the fixed \(66\times66\)
+pattern. Its concrete host, all-copy bound, and arbitrary-repair bound
+are discharged by the imported implementation. The comparator file's
+\texttt{sorry} is a challenge placeholder, not the solution proof.
+Static inspection of 61 MatrixRemoval implementation files, totaling
+7,609 lines, found no \texttt{sorry}, \texttt{admit}, \texttt{axiom}, or
+\texttt{native\_decide}. The comparator permits
+\texttt{propext}, \texttt{Quot.sound}, and \texttt{Classical.choice};
+it has \texttt{enable\_nanoda=false}. The toolchain is Lean 4.34.1.
+\textbf{No Lean build or axiom-printer invocation was executed here.}
+These are source-level findings, not a newly rerun kernel certificate.
+
+\section{The explicit two-group host}\label{sec:host}
+
+\subsection{Positions, multiplicities, and order}
+Fix \(h\ge1\) and \(m=2^h\). At depth \(i\), nodes have indices
+\(0\le p<2^i\); write \(\pi(p)=\lfloor p/2\rfloor\).
+For \(0\le i<h\), each node has disjoint row blocks
+\(R_i^-(p),R_i^+(p)\) and column blocks \(C_i^-(p),C_i^+(p)\),
+all of size \(m/2^i\). At depth \(h\), the signs are identified:
+\[
+R_h^-(p)=R_h^+(p)=R_h(p),\qquad
+C_h^-(p)=C_h^+(p)=C_h(p),
+\]
+and each leaf block has size one. These are the only identifications.
+
+A variable class \(R_i^\sigma\) or \(C_i^\sigma\) is the union of
+all blocks at a fixed depth and sign. The shared leaf class occurs once.
+Every class has size \(m\). For \(i\ge1\), a subscript \(d\in\{0,1\}\)
+restricts to nodes \(p\equiv d\pmod2\). Add dummy row and column blocks
+\(R_*,C_*\), each of size \(m\).
+
+The recursive row order at a nonleaf node is its minus block, the
+zero-child subtree, the one-child subtree, then its plus block.
+The column order is its plus block, the same two subtrees, then its
+minus block. Place a leaf block once. Put \(R_*\) after all variable
+rows and \(C_*\) before all variable columns. Within each block use
+indices \(0,\ldots,\lvert\text{block}\rvert-1\) in increasing order.
+
+For \(1\le i\le h\), comparisons with a parent-level block give
+\begin{equation}\label{eq:orders}
+\begin{aligned}
+R_i^+(p)<R_{i-1}^+(a)&\iff\pi(p)\le a,&
+R_{i-1}^-(a)<R_i^-(p)&\iff a\le\pi(p),\\
+C_{i-1}^+(b)<C_i^+(q)&\iff b\le\pi(q),&
+C_i^-(q)<C_{i-1}^-(b)&\iff\pi(q)\le b.
+\end{aligned}
+\end{equation}
+Here \(X<Y\) means every position of the first block precedes every
+position of the second. The formulas hold for shared leaves too.
+Indeed, depth-\((i-1)\) subtrees occur in increasing node order, and
+each child lies between its parent's opening and closing blocks.
+At a fixed nonleaf depth \(j\),
+\begin{equation}\label{eq:same-level}
+C_j^-(a)<C_j^+(b)\iff a<b,\qquad
+C_j^+(a)<C_j^-(b)\iff a\le b.
+\end{equation}
+Complements of the comparisons in \eqref{eq:orders} give the strict
+reverse inequalities used below; the compared blocks are disjoint.
+
+\subsection{Modes and anchor groups}
+At every depth \(i=1,\ldots,h\), introduce the six modes, in this order:
+\[
+V_i^+,\ V_i^-,\ W_{i,0}^+,\ W_{i,1}^+,\ W_{i,0}^-,\ W_{i,1}^-.
+\]
+Modes at smaller depths come first. Use this same mode order on both
+axes. Their four role sets are
+\begin{equation}\label{eq:roles}
+\begin{array}{c|cc|cc}
+t&\Rrole_1(t)&\Rrole_2(t)&\Crole_1(t)&\Crole_2(t)\\ \hline
+V_i^+&R_i^+&R_{i-1}^+&C_*&C_{i-1}^+\\
+V_i^-&R_{i-1}^-&R_i^-&C_*&C_{i-1}^-\\
+W_{i,d}^+&R_{i,d}^+&R_*&C_{i-1}^+&C_{i,d}^+\\
+W_{i,d}^-&R_{i,d}^-&R_*&C_{i,d}^-&C_{i-1}^-
+\end{array}
+\end{equation}
+For each mode, the two row roles are disjoint, as are the two column
+roles. Correct ordering of representatives is a separate requirement;
+whole role sets need not precede one another.
+
+Before every variable and dummy position, place two anchor groups per
+mode on each axis, denoted \(\ancR_t(1),\ancR_t(2)\) and
+\(\ancC_t(1),\ancC_t(2)\). Every group has size \(m\); group 1 precedes
+group 2. Thus there are \(12h\) anchor groups and \(2h+2\)
+nonanchor classes per axis:
+\[
+n=(12h+2h+2)m=(14h+2)m.
+\]
+Identify the ordered axes with \([n]\).
+
+\subsection{Every entry}
+Between anchors set
+\[
+A_h(\ancR_t(u),\ancC_{t'}(v))
+=\one[t=t']\one[u\ne v].
+\]
+A nonanchor row in \(\Rrole_j(t)\) has signature \(e_j^{\mathsf T}\)
+against the two anchor columns of \(t\); outside both roles it has
+signature zero. A nonanchor column in \(\Crole_j(t)\) has signature
+\(e_j\) against its anchor rows; otherwise its signature is zero.
+
+Between nonanchors put one whenever at least one position is dummy.
+All remaining nonzero entries are specified in this table:
+\begin{equation}\label{eq:entries}
+\begin{array}{ccc|c}
+\text{row block}&\text{column block}&\text{range}&A_h\\ \hline
+R_i^+(p)&C_i^+(q)&0\le i\le h&\one[p\le q]\\
+R_i^-(p)&C_i^-(q)&0\le i<h&\one[p<q]\\
+R_i^+(p)&C_{i-1}^+(q)&1\le i\le h&\one[\pi(p)\le q]\\
+R_i^-(p)&C_{i-1}^-(q)&1\le i\le h&\one[\pi(p)<q]
+\end{array}
+\end{equation}
+Cases absent from the table are zero. Entries are constant on a pair
+of blocks. The same-level minus line excludes the leaves, so the
+shared leaf-by-leaf threshold is weak. In the last two lines the
+column depth is below \(h\), and its two signs are distinct. Thus the
+assignments never conflict.
+
+\section{Structural facts valid at every depth}\label{sec:structural}
+
+\begin{lemma}[Twins, nesting, and signatures]\label{lem:structure}
+The following hold for every \(h\ge1\).
+\begin{enumerate}
+\item Positions within any one anchor group are full row or column
+twins. Positions in a dummy group are full twins too.
+\item An anchor position's positive nonanchor neighborhood is contained
+in one variable class, a parity subclass, or the dummy class.
+\item Within a variable row class, traces on opposite nonanchors are
+nested by inclusion as the node index increases. The same statement
+holds for variable columns. Within any variable class there are at
+most two full traces on opposite anchors.
+\item For a fixed \emph{nonanchor} row, its entries along a variable
+column class are nondecreasing in node order. A nonleaf variable row
+can be nonzero only in its own signed column class and its signed
+parent class. A leaf row can meet only the leaf class and the two
+signed parent classes.
+\item A row in \(\Rrole_2(t)\) and a column in \(\Crole_1(t)\) always
+have entry one.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The first two statements follow from group-constant entries and the role
+table. The variable thresholds in \eqref{eq:entries} are nonincreasing
+in the row node and nondecreasing in the column node. Their zero
+patterns depend only on the class; dummy incidences are constant.
+This proves nesting and the nonanchor-row monotonicity assertion.
+Anchor rows themselves need not have monotone variable traces, because
+their incidences can select parity. The stated restriction is essential.
+
+For completeness, the variable mode incidences, with undefined levels
+omitted, are as follows; \((t,j)\) means role \(j\):
+\[
+\begin{array}{c|l}
+R_i^+(p),\,i<h&(V_i^+,1),(V_{i+1}^+,2),(W_{i,d}^+,1)\\
+R_i^-(p),\,i<h&(V_i^-,2),(V_{i+1}^-,1),(W_{i,d}^-,1)\\
+R_h(p)&(V_h^+,1),(V_h^-,2),(W_{h,d}^+,1),(W_{h,d}^-,1)
+\end{array}
+\]
+and
+\[
+\begin{array}{c|l}
+C_i^+(p),\,i<h&(V_{i+1}^+,2),(W_{i+1,0}^+,1),
+ (W_{i+1,1}^+,1),(W_{i,d}^+,2)\\
+C_i^-(p),\,i<h&(V_{i+1}^-,2),(W_{i+1,0}^-,2),
+ (W_{i+1,1}^-,2),(W_{i,d}^-,1)\\
+C_h(p)&(W_{h,d}^+,2),(W_{h,d}^-,1).
+\end{array}
+\]
+Here \(d=p\bmod2\). Only parity varies within a fixed class, proving
+the two-signature bound, including at the shared leaves. These lists
+also verify the four-mode incidence bound used in the original dense
+anchor argument. Finally, in a \(V\)-mode column role 1 is dummy, and
+in a \(W\)-mode row role 2 is dummy, proving the last assertion.
+\end{proof}
+
+\begin{lemma}[Nonanchor crown exclusion]\label{lem:crown}
+The nonanchor submatrix contains no row-and-column permutation of
+\(\crown_3=J_3-I_3\).
+\end{lemma}
+\begin{proof}
+Such a crown would have three distinct two-element row traces on three
+columns. A dummy column is impossible because it is one on every
+nonanchor row. Two columns from the same variable class are impossible
+because their traces are nested, whereas a crown has incomparable
+column traces. Thus the columns occupy three distinct variable classes.
+A dummy row has trace \(111\), so cannot supply a crown row.
+
+Join two column classes whenever the support of some variable row can
+meet both. This graph is \emph{contained in} the graph formed by two
+signed paths
+\[
+C_0^\sigma-C_1^\sigma-\cdots-C_{h-1}^\sigma
+\quad(\sigma=+,-)
+\]
+and the terminal triangle
+\[
+T=\{C_{h-1}^+,C_{h-1}^-,C_h\}.
+\]
+The containing graph has only this triangle. Some displayed edges
+need not be realized at small depths; equality of graphs is not used.
+The three required two-element supports would force the selected
+classes to be \(T\). Every variable row able to meet two classes of
+\(T\) is a leaf row. Its trace is a permutation of
+\[
+\bigl(\one[\pi(p)\le q_+],\one[\pi(p)<q_-],\one[p\le q_0]\bigr),
+\]
+which is nested as \(p\) increases. It cannot supply three incomparable
+two-element traces. This proves the lemma, including \(h=1\).
+\end{proof}
+
+\section{Every ordered copy localizes to a sparse zero set}
+\label{sec:localization}
+
+\begin{theorem}[All-depth sparse zero localization]\label{thm:localization}
+In every ordered \(\Hfour\)-copy in \(A_h\), its third row is a leaf
+row \(R_h(p)\), and its fourth column belongs to
+\(C_{h-1}^-(\pi(p))\). Thus the prescribed zero at pattern coordinate
+\((3,4)\) lies in
+\[
+Z_h=\bigcup_{p=0}^{m-1}R_h(p)\times C_{h-1}^-(\pi(p)),
+\qquad |Z_h|=2m.
+\]
+\end{theorem}
+
+\subsection{Exhaust all possible anchor counts}
+\begin{lemma}\label{lem:shape}
+Every copy has exactly two anchor rows and either one or two anchor
+columns. With two anchor columns, both axes use the two complete groups
+of one mode and the other positions have that mode's designated roles.
+\end{lemma}
+\begin{proof}
+Let \(a,b\) be the total numbers of anchors among its four rows and four
+columns. They are prefix counts because all anchors come first.
+All four rows of \(\Hfour\) are distinct, as are all four columns.
+
+Suppose \(a\le1\). If \(b=0\), rows \(2,3,4\) and columns \(1,3,4\)
+are nonanchors and form
+\[
+\begin{pmatrix}1&0&1\\1&1&0\\0&1&1\end{pmatrix},
+\]
+a permuted crown, contradicting Lemma~\ref{lem:crown}. If
+\(1\le b\le2\), the first anchor column has ones in nonanchor rows
+2 and 3, putting them in one nonanchor class. On nonanchor columns
+3 and 4 their traces are \(01\) and \(10\), impossible for nested
+variable traces or dummy twins. If \(b\ge3\), anchor column 1 connects
+rows 2 and 3, and anchor column 3 connects rows 3 and 4. The three
+nonanchor rows consequently lie in one class. Their traces on the
+first three anchor columns are \(100,101,011\), three distinct
+signatures, again impossible. Hence \(a\ge2\).
+
+When \(a,b\ge2\), let \(t_1\le t_2\) be the first two row modes and
+\(u_1\le u_2\) the first two column modes. The ones at \((1,2)\)
+and \((2,1)\) give \(t_1=u_2\) and \(t_2=u_1\). Common mode
+order forces all four to agree. Distinct full traces prohibit reuse
+of an anchor group; order therefore gives groups 1 and 2 on both
+axes. An extra anchor body row with a unit signature would repeat
+one of those groups and thus a full row trace. An anchor in another
+mode has zero signature. Neither can be a body row. The identical
+argument applies to columns, so \(a=b=2\), and signatures identify
+the four body roles. This step uses full twins, not just the leading
+two-by-two anchor.
+
+It remains to consider \(b\le1\). If \(b=0,a=2\), anchor row 2 puts
+nonanchor columns 1 and 4 in one class. Their traces on nonanchor
+rows 3 and 4 are \(10,01\), impossible. If \(b=0,a\ge3\), the
+positive supports of the first three anchor rows are
+\(\{2,3\},\{1,4\},\{1,3\}\). Their overlaps put all four columns
+in one class, but their traces on these three anchor rows are
+\(011,100,101,010\), four distinct signatures. This is impossible
+for either a variable or dummy class.
+
+Finally, if \(b=1,a\ge3\), the ones at \((2,1)\) and \((3,1)\)
+put anchor rows 2 and 3 in the same complementary group of the first
+anchor column's mode. They would be full twins, contrary to the
+pattern. The only noncanonical possibility is \((a,b)=(2,1)\).
+\end{proof}
+
+\subsection{Canonical copies: two anchor columns}
+For a canonical copy, the usual four-mode calculation applies with
+no lower bound on the anchor size. In \(V_i^+\), let \(p\) be the
+child row node, \(a\) the parent row node, and \(b\) the parent column
+node. Row order and the bottom-right one give
+\(\pi(p)\le a\le b\), so the top-right entry is one, impossible.
+In \(V_i^-\), row order and the top-right zero give
+\(b\le a\le\pi(p)\); the bottom-right strict threshold is zero,
+also impossible.
+
+In \(W_{i,d}^+\), child row and column nodes \(p,q\) have the same
+parity. The top-left one and column order give
+\(\pi(p)\le b\le\pi(q)\), so \(p\le q\), contradicting the
+top-right zero. In \(W_{i,d}^-\), the inequalities instead give
+\(\pi(q)\le b\le\pi(p)\), hence \(p\ge q\). At \(i<h\) the
+top-left entry \(\one[p<q]\) is zero. At \(i=h\) the weak leaf
+threshold forces \(p=q\) and \(b=\pi(p)\). This establishes
+Theorem~\ref{thm:localization} for canonical copies.
+
+\subsection{Unpinned copies: one anchor column}
+Write \(x,y\) for selected rows 3 and 4 and \(c_2,c_3,c_4\) for
+the nonanchor columns. The one at \((2,1)\) puts anchor row 2 and
+anchor column 1 in complementary groups of some mode \(t\).
+If column 1 were group 2, then \(x\) would be in row role 2 and
+\(c_4\) in column role 1 of \(t\). Their entry is always one by
+Lemma~\ref{lem:structure}, contrary to \(H_4(3,4)=0\).
+Consequently column 1 is group 1, row 2 is group 2, and
+\begin{equation}\label{eq:unpinned}
+x\in\Rrole_1(t),\quad c_4\in\Crole_2(t),\quad A_h(x,c_4)=0.
+\end{equation}
+
+The first anchor row has ones at \(c_2,c_3\), putting them in one
+nonanchor class \(K\). Their entries against \(x\) are \(0,1\).
+Thus \(K\) is variable, and \(x\) is not dummy. Also \(c_4\)
+is not dummy since its entry against \(x\) is zero. Class \(K\)
+differs from the class of \(c_4\): otherwise \(c_3<c_4\) and
+nonanchor-row monotonicity would contradict their values \(1,0\).
+Let \(t_0\) be the first anchor row's mode. Its order gives
+\(t_0\le t\).
+
+\paragraph{Case \(t=V_i^+\).}
+Row \(x\) is child-plus node \(p\), possibly a leaf, and \(c_4\)
+is parent-plus node \(b\). Its zero gives \(\pi(p)>b\).
+If \(K\) is the child class, write \(q\) for \(c_3\)'s node.
+Its one gives \(p\le q\), and \(c_3<c_4\) gives
+\(\pi(q)<b\). Thus \(\pi(p)\le\pi(q)<b\), a contradiction.
+Only at a leaf can \(K\) alternatively be the negative parent
+class. Then its one gives \(\pi(p)<q\), while the same-level
+minus-before-plus order gives \(q<b\). This also contradicts
+\(\pi(p)>b\).
+
+\paragraph{Case \(t=V_i^-\).}
+Row \(x\) is a nonleaf minus node \(p\) at depth \(j=i-1\).
+Column \(c_4\) is in its own minus class at node \(b\); its zero
+gives \(p\ge b\). The only other possible support class is the
+previous minus class, which does not exist when \(j=0\).
+Otherwise let its node be \(q\). Its one and its order before
+\(c_4\) give
+\[
+\pi(p)<q<\pi(b)\le\pi(p),
+\]
+a contradiction.
+
+\paragraph{Case \(t=W_{i,d}^+\).}
+Row \(x\) and column \(c_4\) are child-plus nodes \(p,b\) of the
+same parity, possibly shared leaves. Their zero gives \(p>b\).
+If \(K\) is the positive parent class, its node \(q\) satisfies
+\[
+\pi(p)\le q\le\pi(b).
+\]
+Equal parity would imply \(p\le b\), impossible. At a leaf the
+negative parent class is also possible in principle; it instead
+gives \(\pi(p)<q<\pi(b)\), again impossible.
+
+\paragraph{Case \(t=W_{i,d}^-\), nonterminal \(i<h\).}
+Row \(x\) is minus node \(p\) of parity \(d\), and \(c_4\) is
+parent-minus node \(b\). Its zero gives \(b\le\pi(p)\).
+The remaining class \(K\) must be the own minus class. If its
+node at \(c_3\) is \(q\), the one and column order give
+\[
+p<q,\qquad \pi(q)\le b\le\pi(p).
+\]
+Parent monotonicity forces \(\pi(p)=\pi(q)=b\). Binary siblings
+with \(p<q\) must be
+\begin{equation}\label{eq:siblings}
+p=2b,\qquad q=2b+1.
+\end{equation}
+Thus \(d=0\).
+
+Now use the anchor mode order. A positive anchor incidence with
+the nonterminal column class \(C_i^-\) is possible only in group 1
+of \(W_{i,e}^-\), with columns restricted to parity \(e\), or in
+group 2 of \(V_{i+1}^-\) or \(W_{i+1,e}^-\). The next-level
+modes come after \(t=W_{i,0}^-\), so cannot supply the first anchor
+row. Mode \(W_{i,1}^-\) also comes after \(t\). The first row
+must therefore use \(e=0\), forcing \(q\) even, contrary to
+\eqref{eq:siblings}. This excludes every nonterminal exception.
+
+\paragraph{Case \(t=W_{h,d}^-\), terminal.}
+Now \(x\) is leaf \(p\), and \(c_4\) is negative parent node \(b\)
+with \(b\le\pi(p)\). If \(K\) is the leaf class, its node \(q\)
+at \(c_3\) satisfies
+\[
+p\le q,\qquad \pi(q)\le b\le\pi(p),
+\]
+so \(b=\pi(p)=\pi(q)\). It is unnecessary, and generally false,
+to force \(p=q\). If \(K\) is the positive parent class, its node
+\(q\) gives
+\[
+\pi(p)\le q\le b\le\pi(p),
+\]
+so \(b=q=\pi(p)\). The negative parent class was already excluded
+by monotonicity. These are every possible support class.
+
+Both terminal possibilities put the fixed zero \((3,4)\) into
+\(Z_h\), completing the proof of Theorem~\ref{thm:localization}.
+Each leaf row has size one and its parent-minus column block has
+size two, so \(|Z_h|=2m\).
+
+\begin{corollary}[A sufficient copy bound]\label{cor:sparsecount}
+For every \(h\ge1\), \(N_{\Hfour}(A_h)\le2mn^6\).
+\end{corollary}
+\begin{proof}
+Fix the images of pattern row 3 and column 4 to be one of the
+\(2m\) cells in \(Z_h\). The other three row images and three
+column images have at most \(n^6\) choices. Ordering and matching
+can only reduce this count.
+\end{proof}
+
+\section{Distance against arbitrary edits}\label{sec:distance}
+\begin{theorem}\label{thm:distance}
+For every \(h\ge1\), every \(\Hfour\)-free binary \(n\times n\)
+matrix differs from \(A_h\) in at least \(m^2\) entries.
+\end{theorem}
+\begin{proof}
+Let \(B\) be any binary matrix whose changed-cell set \(E\) has
+\(|E|<m^2\). We prove \(B\) contains \(\Hfour\).
+
+Partition each axis into its anchor groups, its dummy class, its
+signed variable classes below the leaves, and its shared leaf class
+counted once. Every class has size \(m\).
+Choose a uniform leaf \(z\in\{0,\ldots,m-1\}\) and let
+\[
+a_i=\left\lfloor z/2^{h-i}\right\rfloor\quad(0\le i\le h).
+\]
+Conditionally on \(z\), choose uniform positions
+\[
+x_i^\sigma\in R_i^\sigma(a_i),\qquad
+y_i^\sigma\in C_i^\sigma(a_i)
+\]
+independently within distinct blocks, using just one choice on each
+axis at the shared leaf. Independently choose a uniform position
+from every anchor group and both dummy blocks; call the latter
+\(x_*,y_*\).
+
+Each variable representative is uniform on its size-\(m\) class:
+its node has probability \(2^{-i}\), and each within-block choice
+has conditional probability \(2^i/m\). An anchor or dummy
+representative is independent of every opposite-axis representative.
+The root representatives are independent uniform choices in fixed
+size-\(m\) blocks. Hence, for each fixed cell with at least one
+anchor or dummy coordinate, or with both coordinates at root level,
+\[
+\mathbb P(\text{both coordinates are selected})=m^{-2}.
+\]
+Call these cells protected. Nonroot variable pairs may be correlated;
+no \(m^{-2}\) claim is made for them.
+There is one representative per class, including just one leaf
+representative per axis. Summing over the set of changed protected
+cells, each counted once, yields
+\[
+\mathbb P(\text{some selected protected cell belongs to }E)
+\le |E|/m^2<1.
+\]
+Fix a selection avoiding every such change. Its anchor entries,
+anchor-to-body signatures, dummy incidences, and root entries agree
+with the original host. All remaining entries of \(B\) are unrestricted.
+
+In each mode, the selected two anchor rows and columns form the
+required \(\crown_2\), preceding the selected body positions.
+Any correctly ordered selected body equal to
+\(P=\left(\begin{smallmatrix}1&0\\1&1\end{smallmatrix}\right)\)
+therefore extends to an actual \(\Hfour\)-copy in \(B\).
+Suppose, toward a contradiction, that \(B\) is free.
+Its unchanged roots give
+\[
+B(x_0^+,y_0^+)=1,\qquad B(x_0^-,y_0^-)=0.
+\]
+Assume these values have reached level \(i-1\).
+The selected \(V_i^+\) and \(V_i^-\) bodies are
+\[
+\begin{pmatrix}1&B(x_i^+,y_{i-1}^+)\\1&1\end{pmatrix},
+\qquad
+\begin{pmatrix}1&0\\1&B(x_i^-,y_{i-1}^-)\end{pmatrix}.
+\]
+Their orders follow from the common parent-child path and
+\eqref{eq:orders}; the left columns are intact dummy incidences.
+Avoiding \(P\) forces the two unknown entries to be one and zero,
+respectively. Put \(d=a_i\bmod2\). The selected \(W_{i,d}^+\)
+and \(W_{i,d}^-\) bodies then are
+\[
+\begin{pmatrix}1&B(x_i^+,y_i^+)\\1&1\end{pmatrix},
+\qquad
+\begin{pmatrix}B(x_i^-,y_i^-)&0\\1&1\end{pmatrix}.
+\]
+Their bottom rows are intact dummy incidences, and their column
+orders again follow from the common path. Avoiding \(P\) forces
+\[
+B(x_i^+,y_i^+)=1,\qquad B(x_i^-,y_i^-)=0.
+\]
+Induction reaches \(i=h\), where the two asserted values refer
+to the same shared leaf cell. This is impossible. Thus \(B\)
+contains a copy, proving the lower bound.
+\end{proof}
+
+This proof is independent of the all-copy classification in the
+\emph{unedited} host. It allows arbitrary zero-to-one and one-to-zero
+changes in every region. It never substitutes hitting original copies
+for obtaining a free edited matrix. In particular, no claim is made
+that flipping \(Z_h\), or the prior dummy-by-leaf rectangle, repairs
+the two-group host. Nor do we claim the minimum repair size equals
+\(m^2\); the lower bound is what the theorem needs.
+
+\section{Complete copy classification and exact counts}
+\label{sec:exact}
+
+\begin{lemma}\label{lem:dummy}
+The fourth selected row of every copy is dummy.
+\end{lemma}
+\begin{proof}
+Canonical copies already have terminal minus-horizontal roles, so
+the fourth row is dummy. In an unpinned terminal copy, \(x\) is
+leaf row 3, and class \(K\) of columns 2 and 3 is either the leaf
+class or the positive parent class. Row 4 has ones on \(K\) and
+the negative parent column \(c_4\).
+If \(K\) is the leaf class, any such nondummy row is a leaf, since
+only leaf variable rows meet leaf columns. If \(K\) is the positive
+parent class, any variable row meeting both positive and negative
+parent classes must again be a leaf. A leaf row after \(x\) has
+a larger node index; its entry at \(c_2\) is no greater than
+\(x\)'s zero, contradicting the required one. Thus row 4 is dummy.
+\end{proof}
+
+Write \(M=m/2\). The following three families are exhaustive.
+In each description choose arbitrary actual representatives of the
+displayed blocks. The multiplicity of one block description is the
+product of all eight block sizes. The full pattern has distinct
+rows and columns, so no copy can select a twin block twice.
+
+\subsection{Canonical family}
+For every leaf \(p=2b+d\), use both anchor groups on both axes of
+\(W_{h,d}^-\), then leaf row \(p\), a dummy row, leaf column \(p\),
+and a column of \(C_{h-1}^-(b)\). Conversely these always form
+a copy. There are \(m\) block descriptions, each of multiplicity
+\(2m^5\), for
+\begin{equation}\label{eq:canonicalcount}
+2m^6
+\end{equation}
+expanded copies.
+
+\subsection{Unpinned family with two positive-parent columns}
+Choose
+\[
+0\le a<b<M,\qquad d\in\{0,1\},\qquad p=2b+d.
+\]
+The columns, in order, are group 1 of \(W_{h,d}^-\),
+\(C_{h-1}^+(a)\), \(C_{h-1}^+(b)\), \(C_{h-1}^-(b)\).
+The last three rows are group 2 of that minus mode, leaf \(p\),
+and the dummy. The first row is precisely one of
+\[
+\ancR_{V_h^+}(2),\quad
+\ancR_{W_{h,0}^+}(1),\quad
+\ancR_{W_{h,1}^+}(1),
+\]
+or, when \(h\ge2\) and \(a\equiv b\equiv e\pmod2\),
+\(\ancR_{W_{h-1,e}^+}(2)\).
+
+To verify necessity, localization gives the parent index of \(c_4\)
+as \(b=\pi(p)\). The zero and one on \(c_2,c_3\), together with
+their order before \(c_4\), force their indices to be \(a<b\) and
+\(b\), respectively. The displayed first rows are exactly the
+anchor incidences with both positive-parent columns, as seen from
+the complete incidence list. They precede the second row. The role
+table checks every entry, proving sufficiency too.
+
+Thus the number of block descriptions is
+\[
+6\binom M2+
+2\left\{\binom{\lceil M/2\rceil}{2}
+       +\binom{\lfloor M/2\rfloor}{2}\right\}.
+\]
+Each has multiplicity \(8m^4\). For \(h\ge2\), \(M\) is even,
+and the expanded contribution is
+\begin{equation}\label{eq:pluscount}
+7m^6-16m^5.
+\end{equation}
+For \(h=1\), no pair \(a<b\) exists, so this family is empty.
+
+\subsection{Unpinned family with two leaf columns}
+Choose \(p=2b+d\), two leaf nodes \(q_0<p\le q_1\) with
+\(\pi(q_1)=b\), and common column parity
+\(q_0\equiv q_1\equiv e\pmod2\).
+The columns are group 1 of \(W_{h,d}^-\), leaves \(q_0,q_1\),
+and \(C_{h-1}^-(b)\). The last three rows again are group 2 of
+that minus mode, leaf \(p\), and dummy. The first row is
+\(\ancR_{W_{h,e}^+}(2)\), or, if \(e\le d\),
+\(\ancR_{W_{h,e}^-}(1)\).
+
+Necessity follows from the leaf threshold, localization, and the fact
+that these are exactly the anchor incidences with leaf columns.
+The inequality \(e\le d\) is precisely the first-anchor-row order
+condition for a minus mode; all plus modes precede the minus modes.
+The role and threshold tables directly verify sufficiency.
+For each parent \(b\), the possibilities are
+\[
+\begin{array}{c|c|c}
+p&q_1&\text{number of descriptions}\\ \hline
+2b+1&2b+1&2b\\
+2b&2b&2b\\
+2b&2b+1&b
+\end{array}
+\]
+because there are \(b\) earlier leaves of the required parity,
+with two possible first rows in the first two cases and one in
+the last. Summing gives \(5\binom M2\) descriptions, each of
+multiplicity \(2m^4\), for
+\begin{equation}\label{eq:leafcount}
+\frac54m^6-\frac52m^5.
+\end{equation}
+This formula is zero at \(m=2\), as required.
+
+\subsection{Conclusion and comparison of bounds}
+The shape lemma, all-depth mode analysis, and dummy-row lemma prove
+that the three descriptions are exhaustive. They are disjoint by
+anchor count and the class of their two middle columns.
+Adding \eqref{eq:canonicalcount}--\eqref{eq:leafcount} gives
+\[
+N_{\Hfour}(A_h)=\frac{41}{4}m^6-\frac{37}{2}m^5
+\quad(h\ge2).
+\]
+At \(h=1\) only the canonical family remains, giving \(128\).
+In particular \(N_{\Hfour}(A_h)\le(41/4)m^6\) for every \(h\ge1\).
+Dividing by \(n^8=d_h^8m^8\) proves
+\[
+\frac{N_{\Hfour}(A_h)}{n^8}
+\le\frac{41}{4}d_h^{-8}4^{-h}
+=\frac{41}{4}\eps_h^4\,4^{-h}.
+\]
+
+The exact count is not necessary for the main size improvement.
+Corollary~\ref{cor:sparsecount} already gives
+\[
+\frac{N_{\Hfour}(A_h)}{n^8}\le2\eps_h2^{-h}.
+\]
+For arbitrary \(c,C>0\), either bound divided by \(\eps_h^C\)
+tends to zero: an exponential in \(h\) dominates every fixed
+real power of \(14h+2\). Taking \(h\) sufficiently large proves
+the fully quantified failure statement in Section 1, and completes
+Theorem~\ref{thm:main}.
+
+\begin{corollary}[Arbitrarily large orders at each fixed depth]
+For every \(h\ge1\) and every integer \(t\ge1\), replace each entry
+of \(A_h\) by a constant \(t\times t\) block, with consecutive
+clones on each axis. The resulting matrix has order \(tn_h\),
+normalized distance at least \(\eps_h\), and normalized copy
+count exactly \(N_{\Hfour}(A_h)/n_h^8\).
+\end{corollary}
+\begin{proof}
+All partition classes now have size \(tm\). In the protected-path
+proof, choose the common tree leaf uniformly from the original
+\(m\) leaves, then independent uniform representatives within
+the enlarged blocks, including the size-\(t\) leaf blocks.
+Every protected-cell selection probability is \((tm)^{-2}\).
+The same propagation contradiction proves a lower bound
+\((tm)^2\) on edits, and hence the same normalized distance.
+Two clones of one original row or column cannot occur in an
+\(\Hfour\)-copy, since its row and column traces are distinct.
+Every copy therefore projects to a unique original copy, and
+each original copy has exactly \(t^8\) lifts. Division by
+\((tn_h)^8\) proves the count assertion.
+\end{proof}
+Thus the example also defeats formulations that allow an arbitrary
+order threshold depending on \(\eps\): first choose \(h\) to make
+the normalized copy density small, then choose \(t\) to exceed that
+threshold. No interchange of \(\eps\)- and \(n\)-quantifiers is needed.
+
+\section{Adversarial order control and what has not been proved}
+\label{sec:audit}
+
+\subsection{A negative control for the parity order}
+The critical parity-order step is not cosmetic. Reverse
+\(W_{i,0}^-\) and \(W_{i,1}^-\) at each level on both axes, leaving
+every entry rule unchanged. For every \(h\ge3\), the following
+fixed-depth positions form an ordered copy:
+\[
+\begin{array}{c|l}
+\text{rows}&
+\ancR_{W_{2,1}^-}(1),\
+\ancR_{W_{2,0}^-}(2),\
+R_2^-(2),\ R_*\\
+\text{columns}&
+\ancC_{W_{2,0}^-}(1),\
+C_2^-(1),\ C_2^-(3),\ C_1^-(1).
+\end{array}
+\]
+Their traces are \(0110,1001,1010,0111\).
+All selected variable positions are nonleaves. The multiplicity is
+\[
+\left(m\cdot m\cdot\frac m4\cdot m\right)
+\left(m\cdot\frac m4\cdot\frac m4\cdot\frac m2\right)
+=\frac{m^8}{128}.
+\]
+Hence the altered construction has copy density at least
+\(1/(128d_h^8)\), and cannot satisfy our superpolynomial copy
+estimate. This proves failure of the localization mechanism under
+that alteration; it does not prove polynomial removal for the
+pattern in all other hosts.
+
+\subsection{Weak steps examined}
+\begin{enumerate}
+\item \textbf{Unintended copies.} The anchor itself is not rigid.
+Lemma~\ref{lem:shape} exhausts all 25 pairs of total anchor counts
+by explicit cases and uses full twins where unit signatures alone
+would be inadequate.
+\item \textbf{Arbitrary depth.} Nonanchor crown exclusion is proved
+using a support supergraph for every depth. The remaining proof
+has four mode types, the terminal/nonterminal distinction, and
+explicit parity inequalities. No depth cutoff is used.
+\item \textbf{Shared leaves.} The strict minus threshold stops before
+the leaves, both parent signs are included for leaf rows, and
+the terminal unpinned case permits siblings \(p\ne q\).
+\item \textbf{Dummy positions.} Dummy columns are before all variable
+columns; dummy rows follow them. Their full twins and constant
+nonanchor entries are used only in their stated domains.
+\item \textbf{Root boundary.} At \(V_1^-\) the previous minus class
+does not exist; that branch is excluded directly. For \(h=1\),
+there are no nonterminal minus-horizontal cases, and the exact
+count is treated separately.
+\item \textbf{Repair versus hitting.} Sampling protects actual cells
+of an arbitrary edited matrix. Nonroot variable pairs can be
+correlated and can have arbitrary edited values. No proposed
+transversal is assumed to be a free repair.
+\item \textbf{Novelty and formal status.} The candidate and tree
+construction are credited to prior work. No successful \(4\times4\)
+theorem was located in the dated search, but publication priority
+has not been proved. The new theorem has no completed Lean
+formalization and has not undergone external peer review.
+\end{enumerate}
+
+Three separate mathematical derivations in this investigation agreed
+on the localization argument. A further adversarial reading found two
+wording overstatements in working notes: monotonicity must be restricted
+to nonanchor rows, and the support graph is contained in the displayed
+graph rather than necessarily equal to it. Both are corrected in this
+report; neither changes the proof's required hypotheses. The exact
+three-family count was independently rederived rather than inferred
+from the finite table.
+
+\section{Reproducible artifacts and executed verification}
+\label{sec:verification}
+
+\subsection{Independent implementations}
+The archive contains standard-library Python programs:
+\begin{itemize}
+\item \texttt{code/generate.py}: emits every entry of \(A_h\) as binary
+text or as an exact weighted block matrix, with deterministic ordering.
+\item \texttt{code/discover.py}: independently written discovery
+implementation; recursively orders the tree, assigns entries by
+role predicates, inspects every row-block four-tuple, and counts
+all compatible column chains with integer arithmetic.
+\item \texttt{code/independent\_verify.py}: imports neither the discovery
+program nor prior code. It constructs order using rational interval
+endpoints and constructs signatures using explicit role sets. It
+inspects every \emph{column}-block four-tuple and enumerates all
+compatible row chains. It verifies the entire certificate set,
+every one and zero, strict orders, exact multiplicities, and the
+localized zero coordinate.
+\item \texttt{code/families.py}: generates the proved three families
+and compares their complete sets and integer weights with the
+exhaustive certificates.
+\item \texttt{code/finite\_checks.py}: checks the original and suggested
+38-order anchors, all Boolean transition cases, parent-residue
+inequalities, and the reversed-parity negative-control witness.
+\end{itemize}
+No solver output, floating-point arithmetic, or randomized search is
+used for a proof claim. Timings alone use a wall clock.
+
+\subsection{Executed complete finite searches}
+\begin{center}
+\small
+\begin{tabular}{r r r r r r}
+\toprule
+\(h\)&\(n_h\)&block order&four-tuples&block copies&expanded copies\\
+\midrule
+1&32&17&2,380&2&128\\
+2&120&35&52,360&15&23,040\\
+3&352&59&455,126&78&2,080,768\\
+4&928&95&3,183,545&348&152,567,808\\
+5&2,304&155&23,130,030&1,464&10,385,096,704\\
+\bottomrule
+\end{tabular}
+\end{center}
+At each depth the discovery program inspected all row four-tuples;
+the verifier independently inspected all column four-tuples. Every
+complete weighted copy set agreed. The independent verifier completed
+the five-depth run in approximately 18.75 seconds in this environment.
+Complete per-embedding certificates, execution receipts, and a full
+expanded depth-one host are included.
+
+For a certificate, an anchor descriptor is
+\texttt{["A", level, kind, parity, coordinate]}, with coordinates
+zero-based \(0,1\), kind \texttt{V+}, \texttt{V-}, \texttt{W+}, or
+\texttt{W-}, and null parity for \(V\). A variable descriptor is
+\texttt{["T", level, node, sign]}, where \texttt{L} denotes the
+shared leaf. Dummy is \texttt{["D"]}. Each record has four rows,
+four columns, and an exact integer product weight.
+
+Twin compression is exact: selecting two positions from one block
+would repeat a full row or column of the host, impossible because
+the four pattern traces on that axis are distinct. Thus a valid
+compressed copy expands into exactly the product of its eight
+block multiplicities, and all expanded copies arise uniquely.
+This is why the finite certificates count the full host, not just
+a smaller surrogate.
+
+\subsection{Why the finite checks do not extrapolate}
+The finite runs establish the stated finite copy sets and check two
+independent implementations. The infinite result follows from
+Lemmas~\ref{lem:structure}--\ref{lem:shape}, the exhaustive symbolic
+mode cases, and the protected-path induction, all quantified over
+arbitrary \(h\ge1\). Their finite case structure is independent
+of \(h\): only signs, the four mode types, child residues, and the
+terminal boundary are split. Parent monotonicity follows from
+\(p=2\pi(p)+(p\bmod2)\); the only residue values are \(0,1\).
+The exact count follows from complete symbolic families and finite
+sum identities, not a fitted sequence.
+
+\subsection{Commands}
+From the extracted archive directory:
+\begin{samepage}
+\begin{verbatim}
+python3 code/independent_verify.py --max-depth 5 \
+  --output logs/recheck.json
+python3 code/families.py --max-h 5
+python3 code/finite_checks.py --output logs/finite_recheck.json
+python3 code/generate.py --depth 2 --format txt \
+  --output host_h2.txt
+python3 code/discover.py --h 5 --count --collect \
+  --output certificates/h4_copies_h5.json
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+\end{samepage}
+The first command verifies all provided certificates without modifying
+them. The discovery command explicitly regenerates the named one.
+The largest full binary host grows quadratically in \(n_h\) as a file;
+the JSON representation preserves weights and is usually more convenient.
+The programs raise explicit exceptions, so optimized Python does not
+disable their checks.
+
+\section{A kernel-checked Lean route}
+\label{sec:lean}
+The formalization should first target the simpler sparse-zero bound;
+the exact count can be a subsequent theorem. No unproved Lean stub
+is presented as an executed result here.
+\begin{enumerate}
+\item Define \(\Hfour:\mathrm{Fin}\ 4\to\mathrm{Fin}\ 4\to
+\mathrm{Bool}\), ordered copies, and unrestricted Hamming distance
+as in the existing Model module. Prove finite distinctness of its
+four rows and columns with ordinary kernel-checked \texttt{decide}.
+\item Parameterize the anchor-group type in the host, replacing
+\(\mathrm{Fin}\ 64\) by \(\mathrm{Fin}\ 2\), and use
+\(d_h=14h+2\). Reuse or adapt \texttt{TreePositions},
+\texttt{HostTreeOrder}, and \texttt{HostBodyOrder}. Preserve one
+literal leaf position type with both sign views.
+\item Package structural hypotheses: full twins, a common anchor
+prefix and mode order, one-class positive neighborhoods, nested
+nonanchor traces, two signatures per variable class, and nonanchor
+crown exclusion. Prove them from the concrete role and entry tables.
+\item Prove the abstract anchor-count lemma for increasing maps
+\(\mathrm{Fin}\ 4\to[n]\). Formalize its \((a,b)\) cases explicitly.
+The \((2,2)\) branch uses full pattern traces to exclude extra
+anchors; reusing a large-anchor density theorem would not suffice.
+\item For \((2,1)\), extract the complementary groups and roles.
+Prove the four all-depth mode cases using order equivalences and
+integer division. The nonterminal minus case should expose
+\(p=2b,\ q=2b+1\) and then use the concrete mode ordering.
+These local arithmetic implications are suitable for
+\texttt{omega} after unfolding the relevant natural-number facts.
+\item Obtain an injection of copies into
+\(Z_h\times[n]^3\times[n]^3\), proving
+\(\#Z_h=2m\) and \(N_{\Hfour}(A_h)\le2mn^6\).
+The fixed coordinate is \((3,4)\), with value zero.
+\item Reuse the generic Boolean \texttt{PathPropagation} and
+finite \texttt{SamplingDistance} arguments. Re-establish the
+two-group frame extension and exact protected-cell sampling
+bound. Quantify over every binary edited matrix.
+\item Adapt \texttt{SequenceAssembly} and \texttt{Consequence}
+with exponents \(8,6\) and coefficient 2. Prove the limit giving
+the fully quantified failure theorem.
+\item Optionally formalize the three explicit copy families and
+their disjoint cardinalities to obtain the exact count.
+\end{enumerate}
+The final verification gate should build the concrete solution,
+run the comparator on the exact new definitions and theorem, and
+print its axioms. Permit only the standard logical axioms already
+used upstream, with no \texttt{sorryAx}, new postulated combinatorial
+lemmas, or unchecked native-computation oracle. This is a proposed
+verification route, not a completed build in this investigation.
+
+\appendix
+\section{The suggested 38-by-38 anchor is valid but superseded}
+\label{app:38}
+For one-based \(u,v\in[38]\), start from \(J_{38}-I_{38}\).
+Replace rows \(7,\ldots,38\) and columns \(34,\ldots,38\)
+by the 32 lexicographically ordered five-bit words. Call this
+matrix \(S_{38}\). Its first six rows and columns are unaffected
+by the replacement, and every opposite trace there has at most
+one zero. Each row has at least 32 ones, each column at least
+22. Its rows and columns are pairwise distinct: rows \(1,\ldots,33\)
+have individual zeros in the first 33 columns; the last five rows
+are distinguished by different word suffixes. The first 33 columns
+have individual zero positions, while each word column has 16
+zeros and the five coordinate functions differ.
+
+Use the original tree host with this anchor. Each variable position
+has at most four mode incidences against distinct selected anchor
+groups. Dummy twins allow at most one selected dummy on each axis.
+No five nonanchor columns are shattered: if two columns lie in one
+variable class, nesting forbids the two opposite mixed traces.
+Otherwise five distinct classes would need a non-dummy row with
+four ones and a zero to realize all words, but a variable row meets
+at most three classes. A dummy column itself also prevents shattering.
+
+If a selected \(S_{38}\)-copy has at most six anchors on each axis,
+its final 32 rows and last five columns are nonanchors, contradicting
+the word block. Otherwise it has at least six anchor positions on
+one axis. On its first six anchors every opposite pattern trace has
+at least five ones, excluding all variable positions on the other
+axis. All but at most one opposite position are anchors. Two such
+anchors have a common positive entry on the six-position core, so
+all belong to one mode. Density excludes anchor positions of other
+modes on the original axis. A remaining dummy on the opposite axis
+has at most one positive entry against that mode's selected groups,
+contradicting the dense core. Finally every nonanchor on the original
+axis has at most one positive entry against the complete opposite
+mode groups, contradicting row or column density. Full distinctness
+and order exhaust all 38 groups on both axes.
+
+Thus the entire baseline argument works and gives a \(40\times40\)
+pattern. The finite anchor checks in the archive confirm the exact
+properties above. This is not claimed as a novel size improvement,
+because the prior \(5\times5\) construction is already much smaller.
+The successful new argument does not use this anchor.
+
+\section{Dated source scope and novelty limits}
+The record distinguishes source availability from novelty.
+\begin{itemize}
+\item The OpenAI main commit, family-path histories, comparator,
+solution implementation, public PR collection, and relevant PR
+were inspected. No family-190 size change was present.
+\item The ProveIt path was checked again during the investigation.
+Its current main was
+\texttt{1703447ff43256042649da80c73f75121c48c95b};
+the OrderedMatrices path still had only the October 7 intake
+commit. Its research directory contained the same \(5\times5\)
+package, including the displayed \(4\times4\) candidate.
+\item Searches covered the exact title, ordered binary matrix
+removal, four-by-four and five-by-five variants, the relevant
+repositories, and citations and follow-ups to~\cite{ab}.
+No separate successful \(4\times4\) theorem was located.
+\item The mathematical proof of a smaller obstruction is independent
+of this absence finding. Global publication priority is not verified.
+Ordinary web search initially missed the \(5\times5\) report;
+the GitHub code search was materially more informative.
+\end{itemize}
+The accompanying audits give the reviewed URLs, dates, query scope,
+and the distinction between source inspection, prior-code reruns,
+and independent finite verification.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{oai}
+OpenAI, \emph{Polynomial removal fails for ordered binary matrices},
+25 September 2026, family 190, snapshot
+\texttt{fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb}.
+\url{https://github.com/openai/math/tree/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/preprints/Polynomial-removal-fails-for-ordered-binary-matrices-September-25-2026}.
+\bibitem{oaiLean}
+OpenAI, family-190 Lean catalogue and MatrixRemoval implementation.
+\url{https://github.com/openai/math/blob/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/docs/190.md}.
+\url{https://github.com/openai/math/tree/fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb/lean/OAI/Combinatorics/MatrixRemoval}.
+\bibitem{proveit}
+Research draft for the ProveIt project,
+\emph{A \(5\times5\) Obstruction to Polynomial Ordered Matrix Removal},
+7 October 2026, first path-history commit
+\texttt{bfbfe915186310fdf745a7a089e7dd88eeb773b1}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/bfbfe915186310fdf745a7a089e7dd88eeb773b1/Combinatorics/OrderedMatrices/Research/ordered-matrix-removal/ordered_matrix_removal.tex}.
+The candidate and failed-repair witness are in
+\texttt{sections/generalization\_and\_research.tex} at the same commit.
+\bibitem{ab}
+N. Alon and O. Ben-Eliezer,
+\emph{Efficient Removal Lemmas for Matrices}, arXiv:1609.04235v3,
+12 June 2017; \emph{Order} 37 (2020), 83--101.
+\url{https://arxiv.org/abs/1609.04235}.
+\bibitem{abf}
+N. Alon, O. Ben-Eliezer, and E. Fischer,
+\emph{Testing Hereditary Properties of Ordered Graphs and Matrices},
+arXiv:1704.02367; FOCS 2017.
+\url{https://arxiv.org/abs/1704.02367}.
+\bibitem{gs}
+L. Gishboliner and A. Shapira,
+\emph{Polynomial Property Testing}, arXiv:2508.16878v1,
+23 August 2025.
+\url{https://arxiv.org/abs/2508.16878}.
+\bibitem{gt}
+L. Gishboliner and I. Tomon,
+\emph{Polynomial removal lemmas for ordered graphs},
+\emph{Combinatorial Theory} 2(3) (2022), Paper 3;
+arXiv:2110.03577v2.
+\url{https://arxiv.org/abs/2110.03577}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,21 @@
+{
+  "constants": 18348,
+  "project_constants": 855,
+  "kinds": {
+    "theorem": 12480,
+    "inductive": 544,
+    "constructor": 619,
+    "definition": 4565,
+    "recursor": 116,
+    "axiom": 3,
+    "quotient": 4,
+    "opaque": 17
+  },
+  "axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "unsafe": [],
+  "missing": []
+}

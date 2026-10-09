@@ -1,0 +1,72 @@
+{
+  "audit/checkers/IndependentStatements.lean": {
+    "sha256": "0d8aa25a6fe02dc828b9d86a367f5dec89e835dcf0ce312a1590255bf0c70f4c",
+    "size_bytes": 4263,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/checkers/compare_hosts.py": {
+    "sha256": "666fe42fa3396aed8563eb92a7e2749d2091d687336d3e34b36389ead6f504d4",
+    "size_bytes": 3619,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/trust-summary.json": {
+    "sha256": "90d8cd1fd4eefba97e8ecaaff9ab04452bb7972bc317ac3a6896652218e5a14d",
+    "size_bytes": 343,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/independent-host-comparison.json": {
+    "sha256": "a422af1becb52e76b9a092cb86beae35549ea153afed419b53789d5de650b98d",
+    "size_bytes": 795,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/trust-graph.json": {
+    "sha256": "b6710932d4e3c8b8446ce0bd1d16e15770524673495617c6e7e811758fe899b3",
+    "size_bytes": 9789162,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-host-h1.txt": {
+    "sha256": "8c8fe323c9f152dc6095cbe6ea127441e06ecf09b2d23aa006bce64d3fb75ba8",
+    "size_bytes": 1056,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-axis-r-h1.txt": {
+    "sha256": "75cd0a5f19db97f0731434d4e817b0fd477288c36786582d42c9271d628fa7bc",
+    "size_bytes": 308,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-axis-c-h1.txt": {
+    "sha256": "4eaa722b88ab7e3b70b711df80673d2bfa564c5a227d0e2bd8a42fabbf3b38d0",
+    "size_bytes": 308,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-host-h2.txt": {
+    "sha256": "1a6f7dd14f514294f67df2188b1f0878eb454f5bc7d2376ae5baade48626375f",
+    "size_bytes": 14520,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-axis-r-h2.txt": {
+    "sha256": "294547afc7ca39e9fdae86077e654738844c5b27a76e4f4a560cd0e1fb34486a",
+    "size_bytes": 1176,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-axis-c-h2.txt": {
+    "sha256": "cff4560dff84d0bfd3577012656fc588f30d5d7a54cb6eefb1d5f367013e30ba",
+    "size_bytes": 1176,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-host-h3.txt": {
+    "sha256": "f55fa507ee7f59c02b079f70971a18ecbdee8a45b9472ff584a4ffbe6d506317",
+    "size_bytes": 124256,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-axis-r-h3.txt": {
+    "sha256": "2850f5871a3e005c695a7213a6660a18dd3defb086f805456b18bddc1bed4dd1",
+    "size_bytes": 3472,
+    "origin": "Unchanged independent audit artifact"
+  },
+  "audit/evidence/lean-axis-c-h3.txt": {
+    "sha256": "441efc246cab56ae03ea354d079506425f9feac38d2a069cc15dbee2760de33a",
+    "size_bytes": 3472,
+    "origin": "Unchanged independent audit artifact"
+  }
+}

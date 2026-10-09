@@ -1,0 +1,5 @@
+/.lake/
+/tooling/
+/evidence/
+**/__pycache__/
+.DS_Store
