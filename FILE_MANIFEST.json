@@ -1,6 +1,6 @@
 {
   "baseline_commit": "45248e57ab1c2197419981bba04e1cde050494ca",
-  "scope": "Every distributed file except this manifest and SHA256SUMS; SHA256SUMS also covers this manifest",
+  "scope": "Current source documentation revision; every payload file except this manifest and SHA256SUMS. Historical release assets remain at original commit/content hashes.",
   "files": {
     ".gitattributes": {
       "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
@@ -21,6 +21,10 @@
     "DEPENDENCIES.json": {
       "sha256": "c74a12c64b4483a4aeeb6279235fbc88204ade644e6032f0572dbd0c5f8f098f",
       "size_bytes": 1222700
+    },
+    "DOCUMENTATION_CHANGES.md": {
+      "sha256": "fde300fbc5b1d21f2345b398502f946272d9cbd69bd5fe07490589475a183bb5",
+      "size_bytes": 701
     },
     "LICENSE": {
       "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
@@ -73,10 +77,6 @@
     "NOTICE.md": {
       "sha256": "049f75ef19b3f35701203775c2b5151a0686e6dce89c4f7662e097cf7096d3b1",
       "size_bytes": 2187
-    },
-    "OrderedMatrixRemoval4.lean": {
-      "sha256": "2dc45a9ca49dc73a579a0af39c58b21932cf1e17b7628326848b771aff92f989",
-      "size_bytes": 6242
     },
     "OrderedMatrixRemoval4/Arithmetic.lean": {
       "sha256": "9c69b61abcd893de2838b9f0cc7aa5c1d51fa6a50daa1163e2d1218323d88746",
@@ -234,6 +234,10 @@
       "sha256": "64c35829edb9a155b741429f44b4e512d0b2d4fc10377e84c4a0ca920dc6d589",
       "size_bytes": 3207
     },
+    "OrderedMatrixRemoval4.lean": {
+      "sha256": "2dc45a9ca49dc73a579a0af39c58b21932cf1e17b7628326848b771aff92f989",
+      "size_bytes": 6242
+    },
     "PACKAGING_VALIDATION.json": {
       "sha256": "29f9549c34b49bc13363edb98c39b068e9ba57ae065c6f4a666ce2fb77335ac8",
       "size_bytes": 12339
@@ -246,9 +250,13 @@
       "sha256": "f218b1a49f0559d7bc4e678501ae8511d50ddb179b1c26058681a91eaaccfb00",
       "size_bytes": 3264
     },
+    "PUBLICATION_STATUS.md": {
+      "sha256": "d682cd27727476623be98bfa49f9d143b761ab0f030b7446fa0f064277da1cb0",
+      "size_bytes": 2126
+    },
     "README.md": {
-      "sha256": "93cdc7c0bf2c1166942ce999cd59a293b96552515b59de17ff749a01ea510451",
-      "size_bytes": 4375
+      "sha256": "1320e65df29c51b123b5006e7c9d658529eed791f071661d5f82589c285bbec1",
+      "size_bytes": 4502
     },
     "REPRODUCTION_STATUS.md": {
       "sha256": "d3b588e72386f47eb247ac0aee3b823a3b28a52482bca78f894adf2aa559dc72",
@@ -598,5 +606,6 @@
       "sha256": "827f899bf6a16444720d9f6e4d475f030a912c64a18529aeb8d37f363866337d",
       "size_bytes": 395
     }
-  }
+  },
+  "documentation_revision": "2026-10-15.1"
 }
